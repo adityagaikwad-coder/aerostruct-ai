@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroStruct | Structural Quality Inspection</title>
-    <meta name="description" content="AeroStruct: drone-based structural quality inspection for columns, beams, slabs and walls.">
+    <title>AeroStruct | Digital Twin Structural Quality Inspection</title>
+    <meta name="description" content="AeroStruct Digital Twin: Drone-based superstructure quality inspection platform. High-precision visual defect detection for columns, beams, slabs, and shear walls.">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,30 +19,24 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Manrope', 'sans-serif'],
-                        heading: ['Fraunces', 'serif'],
-                        mono: ['Manrope', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
-                        slate: { 50:'#f7f7f9', 100:'#efeef1', 200:'#dedde2', 300:'#c3c3cb', 400:'#9a9ba6', 500:'#6b6c78', 600:'#3b3c47', 700:'#2a2b34', 800:'#1c1d24', 900:'#121318', 950:'#0b0c0f' },
-                        cyan: { 50:'#fcf8ec', 100:'#f8f0d9', 200:'#f0e2bb', 300:'#e6cf94', 400:'#d9b968', 500:'#c9a24a', 600:'#a37e2c', 700:'#7d5f22', 800:'#5c4519', 900:'#3a2c10', 950:'#1d1608' },
-                        blue: { 400:'#d9b968', 500:'#c9a24a', 600:'#a37e2c', 700:'#7d5f22', 900:'#3a2c10' },
-                        teal: { 400:'#e6cf94', 500:'#d9b968', 600:'#c9a24a' },
-                        sky: { 300:'#e6cf94', 400:'#d9b968', 800:'#5c4519', 950:'#1d1608' },
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            900: '#0c4a6e',
+                        obsidian: {
+                            950: '#060a12',
+                            900: '#090e1a',
+                            850: '#0d1424',
+                            800: '#131b2e',
+                            700: '#1d2740',
                         },
-                        cyber: {
-                            dark: '#070b12',
-                            card: '#0d1527',
-                            border: '#26272f',
-                            accent: '#06b6d4',
+                        neon: {
+                            cyan: '#38bdf8',
+                            blue: '#3b82f6',
+                            indigo: '#6366f1',
+                            emerald: '#10b981',
+                            rose: '#f43f5e',
+                            amber: '#f59e0b',
                         }
                     }
                 }
@@ -57,38 +51,93 @@
 
     <style>
         * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0b0c0f; }
-        ::-webkit-scrollbar-thumb { background: #2a2b34; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3b3c47; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #060a12; }
+        ::-webkit-scrollbar-thumb { background: #1d2740; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
 
-        .glass-panel {
-            background: rgba(13, 21, 39, 0.88);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .glass-panel-glow {
-            background: rgba(13, 21, 39, 0.92);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(14, 165, 233, 0.35);
-            box-shadow: 0 0 35px -5px rgba(14, 165, 233, 0.22);
-        }
-
-        .hud-grid {
-            background-size: 32px 32px;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #060a12;
             background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+                radial-gradient(1000px 500px at 50% -10%, rgba(56, 189, 248, 0.08), transparent 70%),
+                radial-gradient(800px 400px at 85% 60%, rgba(99, 102, 241, 0.06), transparent 70%),
+                linear-gradient(to right, rgba(56, 189, 248, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+            background-attachment: fixed;
+            color: #f1f5f9;
         }
 
-        .crosshair-corner {
+        /* Digital Twin Translucent Panels */
+        .twin-card {
+            background: linear-gradient(180deg, rgba(13, 20, 36, 0.82) 0%, rgba(9, 14, 26, 0.88) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.16);
+            box-shadow: 0 16px 40px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .twin-card-glow {
+            background: linear-gradient(180deg, rgba(14, 23, 42, 0.90) 0%, rgba(9, 14, 26, 0.94) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.32);
+            box-shadow: 0 0 35px -5px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .twin-viewport {
+            background: radial-gradient(circle at center, #0a1120 0%, #050811 100%);
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9), 0 0 30px -10px rgba(56, 189, 248, 0.12);
+        }
+
+        /* Digital Twin Status Pills */
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .pill-emerald {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #34d399;
+        }
+
+        .pill-cyan {
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #38bdf8;
+        }
+
+        .pill-indigo {
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            color: #818cf8;
+        }
+
+        .pill-rose {
+            background: rgba(244, 63, 94, 0.12);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            color: #fb7185;
+        }
+
+        /* Reticle Corners */
+        .reticle-corner {
             position: absolute;
             width: 14px;
             height: 14px;
+            border-color: #38bdf8;
+            pointer-events: none;
         }
 
+        /* Scanning HUD animation */
         @keyframes scanline {
             0% { top: 0%; opacity: 0; }
             15% { opacity: 1; }
@@ -101,52 +150,58 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, #c9a24a, #f0e2bb, #c9a24a, transparent);
-            box-shadow: 0 0 16px 3px rgba(201, 162, 74, 0.6);
+            background: linear-gradient(90deg, transparent, #38bdf8, #6366f1, #10b981, transparent);
+            box-shadow: 0 0 16px 3px rgba(56, 189, 248, 0.8);
             animation: scanline 2.2s ease-in-out infinite;
         }
 
-        /* ---- Premium theme overrides ---- */
-        body {
-            font-family: 'Manrope', sans-serif;
-            background:
-                radial-gradient(1200px 600px at 85% -10%, rgba(201, 162, 74, 0.10), transparent 60%),
-                radial-gradient(900px 500px at -10% 110%, rgba(201, 162, 74, 0.06), transparent 60%),
-                #0b0c0f;
-            background-attachment: fixed;
+        /* ========================================================
+           DEDICATED PDF & PRINT STYLING
+           All gimmicks, tabs, buttons & sidebar are strictly HIDDEN.
+           Only clean professional photo + detailed engineering summary.
+           ======================================================== */
+        @media screen {
+            .print-only-report { display: none !important; }
         }
-        .font-heading { font-family: 'Fraunces', serif; letter-spacing: -0.01em; }
-        .font-mono { letter-spacing: 0.04em; }
-        .hud-grid { background-image: none; }
-        .glass-panel {
-            background: linear-gradient(180deg, rgba(26, 27, 34, 0.88), rgba(16, 17, 22, 0.92));
-            border: 1px solid rgba(217, 185, 104, 0.12);
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 50px -28px rgba(0, 0, 0, 0.85);
-        }
-        .glass-panel-glow {
-            background: linear-gradient(180deg, rgba(28, 29, 36, 0.94), rgba(16, 17, 22, 0.96));
-            border: 1px solid rgba(217, 185, 104, 0.32);
-            box-shadow: 0 0 0 1px rgba(217, 185, 104, 0.05), 0 30px 70px -32px rgba(201, 162, 74, 0.30);
-        }
-        button { transition: all 0.2s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-        section { animation: fadeUp 0.5s ease both; }
 
         @media print {
-            body { background: white !important; color: black !important; }
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            .glass-panel, .glass-panel-glow { background: white !important; border: 1px solid #ccc !important; color: black !important; }
+            body {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                font-family: 'Plus Jakarta Sans', Arial, sans-serif !important;
+            }
+            .screen-only-view {
+                display: none !important;
+            }
+            .print-only-report {
+                display: block !important;
+                padding: 32px 40px !important;
+                background: #ffffff !important;
+                color: #0f172a !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
         }
     </style>
 </head>
-<body class="text-slate-100 font-sans min-h-screen antialiased selection:bg-cyan-500/30 selection:text-cyan-100">
+<body class="min-h-screen antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- INLINE ICONS ---
+        // --- ICONS ---
+        const CubeBuildingIcon = ({ className = "w-5 h-5" }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+            </svg>
+        );
+
         const DroneIcon = ({ className = "w-5 h-5" }) => (
             <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
@@ -158,6 +213,20 @@
                 <circle cx="19" cy="5" r="2.5" />
                 <circle cx="5" cy="19" r="2.5" />
                 <circle cx="19" cy="19" r="2.5" />
+            </svg>
+        );
+
+        const SearchIcon = ({ className = "w-4 h-4" }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+        );
+
+        const BellIcon = ({ className = "w-4 h-4" }) => (
+            <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
             </svg>
         );
 
@@ -229,27 +298,27 @@
             </svg>
         );
 
-        // --- SPECIFICATION FROM PUNE RESEARCH PRESENTATION ---
+        // --- STRUCTURAL ELEMENTS & PARAMETERS ---
         const STRUCTURAL_ELEMENTS = [
-            { id: 'column', name: 'Columns', code: 'C', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Vertical supports: straightness, surface and tie holes' },
-            { id: 'beam', name: 'Beams', code: 'B', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Horizontal members: levelness, joints and underside' },
-            { id: 'slab', name: 'Slabs & Terraces', code: 'S', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Floors and roofs: flatness, levelness and cracks' },
-            { id: 'wall', name: 'Walls & Masonry', code: 'W', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Straightness, pour lines and surface finish' },
-            { id: 'shear wall', name: 'Shear Walls', code: 'SW', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Core walls: honeycombing and opening edges' },
-            { id: 'parapet wall', name: 'Parapet Walls', code: 'P', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Roof edge line, drainage slope and weather seals' }
+            { id: 'column', name: 'Columns', code: 'C-01', desc: 'Vertical axial supports, plumb alignment, tie sleeves' },
+            { id: 'beam', name: 'Beams', code: 'B-02', desc: 'Horizontal flexural members, soffit levelness, beam nodes' },
+            { id: 'slab', name: 'Slabs & Terraces', code: 'S-03', desc: 'Floor plates, flatness trueness, ponding micro-cracks' },
+            { id: 'wall', name: 'Walls & Masonry', code: 'W-04', desc: 'Shear facade lines, cold joint compaction, lift lines' },
+            { id: 'shear wall', name: 'Shear Walls', code: 'SW-05', desc: 'Core elevator lift shaft walls, opening perimeters' },
+            { id: 'parapet wall', name: 'Parapet Walls', code: 'P-06', desc: 'Roof edge coping, perimeter drainage line, weather seal' }
         ];
 
         const INSPECTION_PARAMETERS = [
-            { key: 'alignment', name: 'Alignment', desc: 'Axial orientation & grid position', unit: 'mm offset', tolerance: '±5mm (IS 456)' },
-            { key: 'surface', name: 'Surface Condition', desc: 'Voids, efflorescence & honeycombing', unit: '% area', tolerance: '< 2.0% area' },
-            { key: 'cracks', name: 'Cracks', desc: 'Shear, flexural & micro-cracks', unit: 'max width', tolerance: '< 0.20mm (IS 456)' },
-            { key: 'dimensions', name: 'Dimensions', desc: 'Formwork profile & cross-section', unit: 'variance', tolerance: '±6mm tolerance' },
-            { key: 'plumbness', name: 'Plumbness', desc: 'Vertical tilt & lateral deviation', unit: 'mm/3m', tolerance: '±5mm / 3000mm' },
-            { key: 'levelness', name: 'Level / Flatness', desc: 'Soffit trueness & plane levelness', unit: 'mm dip', tolerance: '±4mm in 3m' },
-            { key: 'finish', name: 'Surface Finish', desc: 'Form-liner quality & tie-rod sealing', unit: 'rating', tolerance: 'Grade-B Off-Shutter' }
+            { key: 'alignment', name: 'Alignment', desc: 'Grid placement and axial alignment' },
+            { key: 'surface', name: 'Surface Condition', desc: 'Compaction, bug-holes, void density' },
+            { key: 'cracks', name: 'Cracks', desc: 'Shear, flexural and hairline surface traces' },
+            { key: 'dimensions', name: 'Dimensions', desc: 'Cross-sectional formwork profiles' },
+            { key: 'plumbness', name: 'Plumbness', desc: 'Vertical axial trueness along full height' },
+            { key: 'levelness', name: 'Level / Flatness', desc: 'Horizontal plane trueness & soffit deflection' },
+            { key: 'finish', name: 'Surface Finish', desc: 'Form-tie sleeve mortar sealing & render readiness' }
         ];
 
-        // --- BUILT-IN PROCEDURAL SAMPLES (Guaranteed 100% Reliable Offline) ---
+        // --- BUILT-IN PROCEDURAL SAMPLES ---
         const generateProceduralSample = (type) => {
             const canvas = document.createElement('canvas');
             canvas.width = 640;
@@ -257,147 +326,49 @@
             const ctx = canvas.getContext('2d');
 
             if (type === 'selfie') {
-                // Negative sample: Selfie portrait of 2 people
-                ctx.fillStyle = '#223344';
+                ctx.fillStyle = '#1e293b';
                 ctx.fillRect(0, 0, 640, 420);
-
-                // Person 1
-                ctx.fillStyle = '#e85d4e';
-                ctx.beginPath();
-                ctx.ellipse(220, 380, 140, 100, 0, 0, Math.PI * 2);
-                ctx.fill();
-
                 ctx.fillStyle = '#e5a882';
                 ctx.beginPath();
                 ctx.arc(220, 200, 75, 0, Math.PI * 2);
                 ctx.fill();
-
-                ctx.fillStyle = '#332211';
-                ctx.beginPath();
-                ctx.arc(195, 190, 8, 0, Math.PI * 2);
-                ctx.arc(245, 190, 8, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.strokeStyle = '#8d3b2a';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.arc(220, 230, 25, 0.2, Math.PI - 0.2);
-                ctx.stroke();
-
-                ctx.fillStyle = '#2c1e19';
-                ctx.beginPath();
-                ctx.arc(220, 160, 80, Math.PI, Math.PI * 2);
-                ctx.fill();
-
-                // Person 2
-                ctx.fillStyle = '#2563eb';
-                ctx.beginPath();
-                ctx.ellipse(430, 390, 130, 90, 0, 0, Math.PI * 2);
-                ctx.fill();
-
-                ctx.fillStyle = '#dca27c';
                 ctx.beginPath();
                 ctx.arc(430, 215, 70, 0, Math.PI * 2);
                 ctx.fill();
-
-                ctx.fillStyle = '#332211';
-                ctx.beginPath();
-                ctx.arc(410, 205, 7, 0, Math.PI * 2);
-                ctx.arc(455, 205, 7, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.strokeStyle = '#8d3b2a';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.arc(430, 240, 22, 0.2, Math.PI - 0.2);
-                ctx.stroke();
-
-                ctx.fillStyle = '#111111';
-                ctx.beginPath();
-                ctx.arc(430, 175, 75, Math.PI, Math.PI * 2);
-                ctx.fill();
-
             } else if (type === 'column') {
-                // RCC Column concrete member
-                ctx.fillStyle = '#64748b';
+                ctx.fillStyle = '#334155';
                 ctx.fillRect(0, 0, 640, 420);
 
                 const colGrad = ctx.createLinearGradient(180, 0, 460, 0);
-                colGrad.addColorStop(0, '#78828e');
-                colGrad.addColorStop(0.5, '#9aa5b1');
-                colGrad.addColorStop(1, '#616c79');
+                colGrad.addColorStop(0, '#64748b');
+                colGrad.addColorStop(0.5, '#94a3b8');
+                colGrad.addColorStop(1, '#475569');
                 ctx.fillStyle = colGrad;
                 ctx.fillRect(180, 0, 280, 420);
 
-                ctx.strokeStyle = '#475569';
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.moveTo(180, 0); ctx.lineTo(180, 420);
-                ctx.moveTo(460, 0); ctx.lineTo(460, 420);
-                ctx.moveTo(320, 0); ctx.lineTo(320, 420);
-                ctx.stroke();
-
-                ctx.fillStyle = '#1e293b';
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 2;
                 [90, 190, 290, 370].forEach(y => {
                     ctx.beginPath();
-                    ctx.arc(240, y, 9, 0, Math.PI * 2);
-                    ctx.arc(400, y, 9, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.arc(240, y, 8, 0, Math.PI * 2);
+                    ctx.arc(400, y, 8, 0, Math.PI * 2);
+                    ctx.stroke();
                 });
-
-                ctx.strokeStyle = '#2d3748';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.moveTo(270, 120);
-                ctx.lineTo(285, 145);
-                ctx.lineTo(280, 180);
-                ctx.lineTo(295, 205);
-                ctx.stroke();
-
             } else if (type === 'shearwall') {
-                ctx.fillStyle = '#838e9c';
+                ctx.fillStyle = '#475569';
                 ctx.fillRect(0, 0, 640, 420);
-
-                ctx.strokeStyle = '#4b5563';
-                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 3;
                 [110, 230, 350].forEach(y => {
                     ctx.beginPath();
                     ctx.moveTo(0, y); ctx.lineTo(640, y);
                     ctx.stroke();
                 });
-
-                ctx.fillStyle = '#1f2937';
-                for (let x = 80; x < 600; x += 120) {
-                    for (let y = 55; y < 400; y += 120) {
-                        ctx.beginPath();
-                        ctx.arc(x, y, 8, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
-                }
-
-                ctx.fillStyle = '#374151';
-                ctx.beginPath();
-                ctx.ellipse(450, 240, 35, 20, 0, 0, Math.PI * 2);
-                ctx.fill();
-
             } else if (type === 'slab') {
-                ctx.fillStyle = '#7a8594';
+                ctx.fillStyle = '#64748b';
                 ctx.fillRect(0, 0, 640, 420);
-
-                ctx.fillStyle = '#596472';
+                ctx.fillStyle = '#475569';
                 ctx.fillRect(0, 0, 640, 160);
-                ctx.strokeStyle = '#334155';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.moveTo(0, 160); ctx.lineTo(640, 160);
-                ctx.stroke();
-
-                ctx.strokeStyle = 'rgba(235, 240, 245, 0.45)';
-                ctx.lineWidth = 6;
-                [120, 260, 420, 540].forEach(x => {
-                    ctx.beginPath();
-                    ctx.moveTo(x, 160);
-                    ctx.lineTo(x + 15, 320);
-                    ctx.stroke();
-                });
             }
 
             const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
@@ -412,10 +383,10 @@
         };
 
         const BUILTIN_SAMPLES = [
-            { id: 'column', name: 'Column - Formwork Ties', element: 'column', type: 'column', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
-            { id: 'shearwall', name: 'Shear Wall - Core Facade', element: 'shear wall', type: 'shearwall', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
-            { id: 'slab', name: 'Concrete Slab & Drop Beams', element: 'slab', type: 'slab', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
-            { id: 'selfie', name: '⚠️ Selfie / Portrait (Negative Test)', element: 'column', type: 'selfie', isConstruction: false, tagClass: 'bg-rose-950/80 text-rose-300 border-rose-800' }
+            { id: 'column', name: 'Column (Lift A)', element: 'column', type: 'column', statusText: 'Onsite', isConstruction: true },
+            { id: 'shearwall', name: 'Shear Wall Facade', element: 'shear wall', type: 'shearwall', statusText: 'Active', isConstruction: true },
+            { id: 'slab', name: 'Slab Soffit', element: 'slab', type: 'slab', statusText: 'Active', isConstruction: true },
+            { id: 'selfie', name: 'Negative Test (Selfie)', element: 'column', type: 'selfie', statusText: 'Filtered', isConstruction: false }
         ];
 
         // Process Uploaded File
@@ -440,7 +411,7 @@
             reader.onerror = (err) => reject(err);
         });
 
-        // --- COMPUTER VISION DOMAIN VALIDATION (Anti-Selfie / Anti-Hallucination Guardrail) ---
+        // Computer Vision Pre-Flight Filter
         const preScanImageValidity = (imgSrc) => {
             return new Promise((resolve) => {
                 const img = new Image();
@@ -453,42 +424,27 @@
                     canvas.height = Math.max(10, Math.floor(img.height * scale));
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    const d = imageData.data;
-                    const totalPixels = canvas.width * canvas.height;
-                    
+
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const d = imgData.data;
+                    const totalPixels = d.length / 4;
+
                     let skinPixels = 0;
                     let concretePixels = 0;
                     let vibrantColorPixels = 0;
                     let sumY = 0;
 
                     for (let i = 0; i < d.length; i += 4) {
-                        const r = d[i];
-                        const g = d[i+1];
-                        const b = d[i+2];
-
+                        const r = d[i], g = d[i + 1], b = d[i + 2];
                         const y = 0.299 * r + 0.587 * g + 0.114 * b;
                         const cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b;
                         const cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
                         sumY += y;
 
-                        // YCbCr skin tone cluster
-                        if (cb >= 77 && cb <= 127 && cr >= 133 && cr <= 173) {
-                            skinPixels++;
-                        }
-
+                        if (cb >= 77 && cb <= 127 && cr >= 133 && cr <= 173) skinPixels++;
                         const maxDelta = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(b - r));
-
-                        // Concrete achromatic tones
-                        if (maxDelta < 22 && y >= 35 && y <= 225) {
-                            concretePixels++;
-                        }
-
-                        // Saturated vibrant colors
-                        if (maxDelta > 40) {
-                            vibrantColorPixels++;
-                        }
+                        if (maxDelta < 22 && y >= 35 && y <= 225) concretePixels++;
+                        if (maxDelta > 40) vibrantColorPixels++;
                     }
 
                     const skinRatio = skinPixels / totalPixels;
@@ -497,17 +453,9 @@
                     const avgY = sumY / totalPixels;
                     const hash = Math.abs(Math.sin(concreteRatio * 1000 + skinRatio * 500 + avgY) * 10000);
 
-                    // Rejection trigger
                     const isRejected = (skinRatio > 0.09) || (concreteRatio < 0.28 && vibrantRatio > 0.25) || (concreteRatio < 0.15);
 
-                    resolve({
-                        skinRatio,
-                        concreteRatio,
-                        vibrantRatio,
-                        avgY,
-                        isRejected,
-                        signatureHash: hash
-                    });
+                    resolve({ skinRatio, concreteRatio, vibrantRatio, avgY, isRejected, signatureHash: hash });
                 };
                 img.onerror = () => {
                     resolve({ skinRatio: 0, concreteRatio: 0.5, isRejected: false, signatureHash: 42 });
@@ -516,7 +464,7 @@
             });
         };
 
-        // --- PROCEDURAL DYNAMIC CIVIL INSPECTION ENGINE ---
+        // --- PROCEDURAL CIVIL INSPECTION ENGINE ---
         const generateProceduralInspection = (element, imgMetrics, floorNo, towerId, cameraAngle) => {
             const h = imgMetrics.signatureHash;
             const seed = (offset) => ((Math.sin(h + offset) + 1) / 2);
@@ -540,62 +488,56 @@
             const tieHolesCount = Math.floor(2 + seed(7) * 6);
             const tieHolesSealed = seed(8) > 0.45;
 
-            // Generate dynamic visual defect bounding boxes for HUD overlay
+            // Generate bounding boxes
             const boxes = [];
-
-            // 1. Tie-rod hole / Bug hole cluster
             boxes.push({
                 id: 'bx-1',
-                label: tieHolesSealed ? 'Sealed Tie-Rod Sleeve' : 'Unsealed Form-Tie Hole',
+                label: tieHolesSealed ? 'Sealed Tie-Rod Sleeve' : 'Unsealed Form-Tie Sleeve',
                 severity: tieHolesSealed ? 'tolerance' : 'minor',
-                x: +(15 + seed(9) * 25).toFixed(1),
-                y: +(20 + seed(10) * 20).toFixed(1),
-                w: +(12 + seed(11) * 8).toFixed(1),
-                h: +(10 + seed(12) * 8).toFixed(1),
-                notes: 'A hole left by the formwork; it should be filled with grout.'
+                x: +(18 + seed(9) * 22).toFixed(1),
+                y: +(22 + seed(10) * 18).toFixed(1),
+                w: +(11 + seed(11) * 7).toFixed(1),
+                h: +(9 + seed(12) * 7).toFixed(1),
+                notes: 'Formwork penetration sleeve requiring non-shrink polymer grout sealing.'
             });
 
-            // 2. Concrete Surface Void or Honeycomb
             if (voidPercentage > 1.0) {
                 boxes.push({
                     id: 'bx-2',
                     label: voidPercentage > 1.8 ? 'Localized Honeycombing' : 'Surface Bug-Holes / Air Voids',
                     severity: voidPercentage > 1.8 ? 'moderate' : 'minor',
-                    x: +(52 + seed(13) * 20).toFixed(1),
-                    y: +(40 + seed(14) * 30).toFixed(1),
-                    w: +(18 + seed(15) * 12).toFixed(1),
-                    h: +(14 + seed(16) * 10).toFixed(1),
-                    notes: 'A cluster of small air pockets on the concrete surface near the pour joint.'
+                    x: +(52 + seed(13) * 18).toFixed(1),
+                    y: +(42 + seed(14) * 28).toFixed(1),
+                    w: +(16 + seed(15) * 10).toFixed(1),
+                    h: +(13 + seed(16) * 9).toFixed(1),
+                    notes: 'Cluster of small air voids on the concrete surface near the construction joint.'
                 });
             }
 
-            // 3. Crack if detected
             if (hasCrack) {
                 boxes.push({
                     id: 'bx-3',
                     label: crackWidth > 0.20 ? 'Flexural / Shear Crack' : 'Hairline Surface Micro-Crack',
                     severity: crackWidth > 0.20 ? 'critical' : 'minor',
-                    x: +(32 + seed(17) * 30).toFixed(1),
-                    y: +(18 + seed(18) * 35).toFixed(1),
-                    w: +(22 + seed(19) * 20).toFixed(1),
-                    h: +(16 + seed(20) * 18).toFixed(1),
-                    notes: crackWidth > 0.20 ? 'A visible crack that is wider than it should be and needs a closer look.' : 'A very fine surface crack that is not a concern at this stage.'
+                    x: +(32 + seed(17) * 28).toFixed(1),
+                    y: +(18 + seed(18) * 32).toFixed(1),
+                    w: +(20 + seed(19) * 18).toFixed(1),
+                    h: +(15 + seed(20) * 16).toFixed(1),
+                    notes: crackWidth > 0.20 ? 'Crack trace requiring close-up non-destructive examination.' : 'Superficial hairline micro-crack within acceptable tolerances.'
                 });
             }
 
-            // 4. Plumb / Grid Datum Line
             boxes.push({
                 id: 'bx-4',
-                label: isPlumbPass ? 'Vertical Line (Straight)' : 'Vertical Line (Slight Lean)',
+                label: isPlumbPass ? 'Vertical Datum (Straight)' : 'Vertical Datum (Minor Offset)',
                 severity: isPlumbPass ? 'tolerance' : 'moderate',
-                x: +(22 + seed(21) * 12).toFixed(1),
+                x: +(24 + seed(21) * 10).toFixed(1),
                 y: +(8 + seed(22) * 8).toFixed(1),
-                w: +(52 + seed(23) * 18).toFixed(1),
+                w: +(50 + seed(23) * 16).toFixed(1),
                 h: +(78 + seed(24) * 12).toFixed(1),
-                notes: isPlumbPass ? 'The member stands straight along its full height.' : 'The member leans slightly from true vertical.'
+                notes: isPlumbPass ? 'Axial alignment true along entire story height.' : 'Slight vertical offset relative to grid.'
             });
 
-            // Calculate overall Health Score
             let healthScore = 100;
             if (!isAlignmentWithinTolerance) healthScore -= 12;
             if (!isSurfacePass) healthScore -= 14;
@@ -608,6 +550,28 @@
 
             const severityRating = healthScore >= 85 ? 'Good Condition' : healthScore >= 70 ? 'Minor Repairs Needed' : 'Repairs Needed';
 
+            // Concise summary for on-screen view
+            const shortSummary = [
+                `The ${element} on Floor ${floorNo} of ${towerId} looks ${healthScore >= 85 ? 'to be in good overall condition' : healthScore >= 70 ? 'generally sound with minor surface blemishes' : 'to have visible defects that require contractor attention'}, standing ${isPlumbPass ? 'straight and well aligned with the grid datum' : 'slightly off the primary vertical axis'}.`,
+                `The concrete surface ${isSurfacePass ? 'is smooth, well-consolidated, and shows minimal air voids' : 'displays localized patches of air voids and slight honeycombing'}${hasCrack ? `, and a ${isCrackAllowable ? 'superficial hairline micro-crack is visible, remaining within allowable tolerances' : 'distinct surface fracture is visible that requires chemical sealing'}` : ', with no visible cracks identified on any face'}.`,
+                `${tieHolesSealed ? 'All formwork tie-rod penetration sleeves have been properly plugged.' : 'Several form-tie sleeves remain unsealed and require grout filling prior to rendering.'} ${healthScore >= 85 ? 'Only routine surface cleaning and scheduled progress verification at the next floor casting are recommended.' : 'The contractor should carry out the remedial actions listed below before final architectural finishes.'}`
+            ].join(' ');
+
+            // Detailed, fluff-free engineering assessment for the PDF report
+            const detailedReport = {
+                overview: `High-resolution photogrammetric drone inspection was executed on the ${element} situated at Floor Level ${floorNo} within ${towerId}. Geometrical orientation and global positioning indicate that the structural element is ${isPlumbPass && isAlignmentWithinTolerance ? 'accurately centered along the designated building grid axis with zero observable lateral eccentricity' : 'presenting a slight axial deviation requiring confirmation against structural coordinate drawings'}.`,
+                concreteCondition: `Visual examination of the outer concrete face demonstrates ${isSurfacePass ? 'uniform paste distribution and thorough compaction, with bug-hole coverage remaining well within allowable limits' : 'localized surface void density and slight honeycombing adjacent to the pour boundary'}. ${hasCrack ? (isCrackAllowable ? 'An isolated hairline micro-crack was traced across the surface; width and orientation classify it as non-structural shrinkage, posing no immediate structural compromise.' : 'A continuous fracture line was observed across the member face. Due to its observable width, non-destructive depth probing and low-pressure epoxy injection sealing are advised.') : 'Zero shear fissures or diagonal flexural tension cracks were observed across all inspected elevations.'}`,
+                tieRodsAndPlumbing: `Formwork tie-rod sleeves and through-bolt penetrations were inspected: ${tieHolesSealed ? 'all sleeves have been plugged with non-shrink polymer cement mortar flush with the concrete surface' : `${tieHolesCount} form-tie sleeve penetrations remain open and unplugged; non-shrink cementitious grout sealing is mandatory before waterproofing and plaster application`}. Vertical plumbness across the story height is ${isPlumbPass ? 'within acceptable building tolerance limits' : 'slightly deviating and warrants a follow-up plumb-line check'}.`,
+                conclusion: `Structural health assessment confirms that the member is in ${severityRating.toUpperCase()}. All identified visual anomalies are localized and can be addressed via standard site contractor rectification procedures without compromising primary structural capacity.`
+            };
+
+            const remedialActions = [
+                tieHolesSealed ? null : 'Plug and seal all open formwork tie-rod penetrations using approved non-shrink polymer grout.',
+                hasCrack && crackWidth > 0.15 ? 'Perform low-pressure epoxy injection grouting along the mapped crack fissure line.' : null,
+                voidPercentage > 1.5 ? 'Grind localized rough surface patches and apply a polymer-modified fairing coat.' : null,
+                'Perform follow-up photogrammetric verification during next floor casting cycle.'
+            ].filter(Boolean);
+
             return {
                 meta: {
                     element,
@@ -617,71 +581,48 @@
                     timestamp: new Date().toLocaleString(),
                     healthScore,
                     severityRating,
-                    allowableToleranceStandard: 'IS 456:2000 (Plain and Reinforced Concrete - Code of Practice)'
                 },
                 metrics: {
                     alignment: {
                         name: 'Alignment',
-                        measured: `${alignmentOffset} mm`,
-                        limit: '±5.0 mm',
                         status: isAlignmentWithinTolerance ? 'PASS' : 'WARNING',
-                        detail: isAlignmentWithinTolerance ? 'The member sits correctly on its grid line with no visible shift to either side.' : 'The member appears to sit slightly off its intended grid line.'
+                        detail: isAlignmentWithinTolerance ? 'Member sits accurately on grid line with no lateral offset.' : 'Member appears slightly shifted from intended grid line.'
                     },
                     surface: {
                         name: 'Surface Condition',
-                        measured: `${voidPercentage} %`,
-                        limit: '< 2.0 %',
                         status: isSurfacePass ? 'PASS' : 'WARNING',
-                        detail: isSurfacePass ? 'The surface is mostly smooth with only a few tiny air holes.' : 'The surface shows noticeable air pockets and rough patches that need finishing.'
+                        detail: isSurfacePass ? 'Concrete surface is uniform with minimal bug-holes or voids.' : 'Surface displays small void clusters and rough patches requiring fairing coat.'
                     },
                     cracks: {
                         name: 'Cracks',
-                        measured: hasCrack ? `${crackWidth} mm` : 'None Visible',
-                        limit: '< 0.20 mm',
                         status: !hasCrack || isCrackAllowable ? 'PASS' : 'ACTION REQUIRED',
-                        detail: hasCrack ? (isCrackAllowable ? 'A fine hairline crack is visible on the surface. It is minor and should just be monitored.' : 'A visible crack runs across the surface and should be inspected and repaired.') : 'No cracks are visible on the exposed faces.'
+                        detail: hasCrack ? (isCrackAllowable ? 'Hairline micro-crack visible; within normal drying shrinkage limits.' : 'Continuous crack trace identified; requires chemical epoxy injection.') : 'No observable shear or tension fissures on exposed faces.'
                     },
                     dimensions: {
-                        name: 'Dimensions & Formwork',
-                        measured: `±${(2.0 + seed(25) * 3).toFixed(1)} mm`,
-                        limit: '±6.0 mm',
+                        name: 'Dimensions',
                         status: 'PASS',
-                        detail: 'The size and shape of the member look consistent with the expected design.'
+                        detail: 'Cross-sectional profile conforms to expected design geometry.'
                     },
                     plumbness: {
                         name: 'Plumbness',
-                        measured: `${plumbnessDeviation} mm / 3m`,
-                        limit: '±5.0 mm / 3m',
                         status: isPlumbPass ? 'PASS' : 'WARNING',
-                        detail: isPlumbPass ? 'The member stands upright along its full height.' : 'The member leans slightly and should be checked on site.'
+                        detail: isPlumbPass ? 'Member stands upright with true verticality along full height.' : 'Member displays slight vertical tilt; on-site plumb check advised.'
                     },
                     levelness: {
-                        name: 'Level / Flatness Indicators',
-                        measured: `${levelnessDip} mm`,
-                        limit: '±4.0 mm',
+                        name: 'Level / Flatness',
                         status: isLevelPass ? 'PASS' : 'WARNING',
-                        detail: isLevelPass ? 'The surfaces look flat and level with no visible sagging.' : 'A slight dip or unevenness is visible and should be checked.'
+                        detail: isLevelPass ? 'Plane surface is flat with no sagging or board deflection.' : 'Slight planar unevenness noted near the formwork joint.'
                     },
                     finish: {
-                        name: 'Surface Finish & Tie Sleeves',
-                        measured: `${tieHolesCount} sleeves detected`,
-                        limit: '100% Sealed',
+                        name: 'Surface Finish & Sleeves',
                         status: tieHolesSealed ? 'PASS' : 'ACTION REQUIRED',
-                        detail: tieHolesSealed ? 'The holes left by the formwork ties have been neatly filled.' : 'Some holes left by the formwork ties are still open and need to be filled before plastering or painting.'
+                        detail: tieHolesSealed ? 'All formwork tie sleeves are cleanly plugged with non-shrink mortar.' : 'Unsealed tie-rod holes remain open; grout filling required prior to rendering.'
                     }
                 },
                 boxes,
-                shortSummary: [
-                    `The ${element} on Floor ${floorNo} of ${towerId} looks ${healthScore >= 85 ? 'to be in good overall condition' : healthScore >= 70 ? 'generally sound but with some visible flaws' : 'to have noticeable defects that need attention'}, and it stands ${isPlumbPass ? 'straight and well aligned with its grid line' : 'slightly out of plumb compared with its grid line'}.`,
-                    `The concrete surface ${isSurfacePass ? 'is mostly smooth and well compacted' : 'shows patches of air pockets and rough, honeycomb-like areas'}${hasCrack ? `, and a ${isCrackAllowable ? 'fine hairline crack is visible, which is within the acceptable limit' : 'wider crack is visible that goes beyond the acceptable limit'}` : ', with no visible cracks'}.`,
-                    `${tieHolesSealed ? 'The holes left by the formwork ties have been properly filled.' : 'Some holes left by the formwork ties are still open and should be filled before plastering or painting.'} ${healthScore >= 85 ? 'Only routine touch-up and a follow-up check at the next floor are needed.' : 'The contractor should carry out the repairs listed below, and a closer on-site check is advisable.'}`
-                ].join(' '),
-                remedialActions: [
-                    tieHolesSealed ? null : 'Apply non-shrink polymer-modified cementitious grout to open form-tie sleeves.',
-                    hasCrack && crackWidth > 0.15 ? 'Perform low-pressure epoxy injection grouting along crack fissure.' : null,
-                    voidPercentage > 1.5 ? 'Surface grind localized rough patch and apply fairing coat prior to primer.' : null,
-                    'Conduct follow-up drone photogrammetry verification at next floor casting stage.'
-                ].filter(Boolean)
+                shortSummary,
+                detailedReport,
+                remedialActions
             };
         };
 
@@ -689,7 +630,7 @@
         function App() {
             const [selectedElement, setSelectedElement] = useState(STRUCTURAL_ELEMENTS[0].id);
             const [floorNumber, setFloorNumber] = useState('14');
-            const [towerId, setTowerId] = useState('Tower B');
+            const [towerId, setTowerId] = useState('Tower A');
             const [flightAngle, setFlightAngle] = useState('45');
             
             const [images, setImages] = useState([]);
@@ -726,7 +667,7 @@
                 } catch (err) {
                     setValidationError({
                         title: 'Upload Error',
-                        reason: 'Error reading image files. Please try uploading standard JPG or PNG photos.'
+                        reason: 'Error reading image files. Please upload standard JPG or PNG site photographs.'
                     });
                 }
                 if (fileInputRef.current) fileInputRef.current.value = '';
@@ -745,8 +686,8 @@
             const runInspection = async () => {
                 if (images.length === 0) {
                     setValidationError({
-                        title: 'No Image Loaded',
-                        reason: 'Please upload or select an inspection photo first.'
+                        title: 'No Image Selected',
+                        reason: 'Please upload an inspection photograph or pick a sample image to begin.'
                     });
                     return;
                 }
@@ -756,29 +697,26 @@
                 setValidationError(null);
                 setInspectionResult(null);
 
-                // --- STAGE 1: COMPUTER VISION PRE-SCAN VALIDATION ---
-                setAnalysisProgress('Checking the photo...');
+                setAnalysisProgress('Running Computer Vision Pre-Scan...');
                 await new Promise(r => setTimeout(r, 400));
 
                 const preScan = await preScanImageValidity(currentImg.preview);
 
-                // STRICT ANTI-HALLUCINATION GUARDRAIL
                 if (preScan.isRejected) {
                     setIsAnalyzing(false);
                     setAnalysisProgress('');
                     setValidationError({
-                        title: 'Photo Not Accepted',
-                        reason: 'This photo does not appear to show a construction element. It may show people or another non-structural scene.',
-                        fix: 'Please upload a clear site photo of a column, beam, slab or wall.'
+                        title: 'Image Filtered Out',
+                        reason: 'The uploaded image does not appear to show a structural concrete element. Portraits, selfies, or non-construction scenes are automatically filtered out.',
+                        fix: 'Please upload an authentic site photograph showing a column, beam, slab, or wall.'
                     });
                     return;
                 }
 
-                // --- STAGE 2: PROCEDURAL CIVIL ANALYSIS ---
-                setAnalysisProgress('Examining the structure...');
-                await new Promise(r => setTimeout(r, 550));
+                setAnalysisProgress('Synthesizing Digital Twin Holographic Layer...');
+                await new Promise(r => setTimeout(r, 500));
 
-                setAnalysisProgress('Preparing your report...');
+                setAnalysisProgress('Evaluating Structural Integrity & Defect Mapping...');
                 await new Promise(r => setTimeout(r, 450));
 
                 const dynamicResult = generateProceduralInspection(selectedElement, preScan, floorNumber, towerId, flightAngle);
@@ -791,615 +729,776 @@
             const activeImg = images[selectedImageIndex];
 
             return (
-                <div className="flex flex-col min-h-screen">
-                    {/* Top Drone Telemetry Navigation Bar */}
-                    <header className="glass-panel border-b border-cyber-border sticky top-0 z-40 px-5 py-3.5 flex items-center justify-between no-print shadow-xl">
-                        <div className="flex items-center space-x-3.5">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-300 via-cyan-500 to-cyan-700 flex items-center justify-center shadow-lg shadow-cyan-500/20 ring-1 ring-white/20 shrink-0">
-                                <DroneIcon className="w-6 h-6 text-slate-950" />
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <h1 className="font-heading font-extrabold text-lg tracking-tight text-white">
-                                        Aero<span className="text-cyan-400">Struct</span>
-                                    </h1>
+                <div>
+                    {/* ========================================================
+                        SCREEN VIEW: Constructio Digital Twin Aesthetic
+                        ======================================================== */}
+                    <div className="screen-only-view flex flex-col min-h-screen">
+                        {/* Top Bar: Exactly matching the Constructio Digital Twin Reference */}
+                        <header className="twin-card border-b border-cyan-500/20 sticky top-0 z-40 px-5 py-3 flex items-center justify-between">
+                            {/* Brand & Digital Twin Breadcrumbs */}
+                            <div className="flex items-center space-x-3 text-xs">
+                                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/25 shrink-0">
+                                    <CubeBuildingIcon className="w-5 h-5 text-white" />
                                 </div>
-                                <p className="text-xs text-slate-400">
-                                    Structural Quality Inspection
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Navigation Tabs with Color Coding */}
-                        <div className="hidden md:flex items-center space-x-1.5 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800">
-                            <button
-                                onClick={() => setActiveTab('inspector')}
-                                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
-                                    activeTab === 'inspector'
-                                        ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                                        : 'text-slate-400 hover:text-white'
-                                }`}
-                            >
-                                <EyeIcon className="w-3.5 h-3.5" />
-                                Inspection
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('comparison')}
-                                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
-                                    activeTab === 'comparison'
-                                        ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                                        : 'text-slate-400 hover:text-white'
-                                }`}
-                            >
-                                <LayersIcon className="w-3.5 h-3.5" />
-                                Why Drones
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('methodology')}
-                                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
-                                    activeTab === 'methodology'
-                                        ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                                        : 'text-slate-400 hover:text-white'
-                                }`}
-                            >
-                                <ShieldCheckIcon className="w-3.5 h-3.5" />
-                                Methodology
-                            </button>
-                        </div>
-
-                        {/* Telemetry Status Chips & Print */}
-                        <div className="flex items-center space-x-2.5 text-xs">
-                            <button
-                                onClick={() => window.print()}
-                                className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
-                                title="Print or Export PDF"
-                            >
-                                <DownloadIcon className="w-3.5 h-3.5 text-cyan-400" />
-                                <span>Report PDF</span>
-                            </button>
-                        </div>
-                    </header>
-
-                    {/* Main Layout Area: Side-by-side on desktop */}
-                    <div className="flex-1 flex flex-col md:flex-row">
-                        {/* LEFT SIDEBAR: Flight Parameters & Sample Data */}
-                        <aside className="w-full md:w-80 lg:w-96 glass-panel border-r border-cyber-border p-5 flex flex-col space-y-5 shrink-0 no-print">
-                            {/* Target Element Selector with Distinct Accents */}
-                            <div>
-                                <label className="block text-[11px] font-mono font-bold text-cyan-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-                                    <span>Structural Element</span>
-                                    <span className="text-[10px] text-slate-500 font-normal">Choose one</span>
-                                </label>
-                                <div className="space-y-1.5">
-                                    {STRUCTURAL_ELEMENTS.map(el => (
-                                        <button
-                                            key={el.id}
-                                            onClick={() => {
-                                                setSelectedElement(el.id);
-                                                setInspectionResult(null);
-                                            }}
-                                            className={`w-full text-left p-2.5 rounded-xl border text-xs transition-all flex items-center justify-between ${
-                                                selectedElement === el.id
-                                                    ? 'bg-slate-800/90 border-cyan-500 text-white shadow-sm ring-1 ring-cyan-500/30'
-                                                    : 'bg-slate-900/40 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                                            }`}
-                                        >
-                                            <div>
-                                                <div className="font-semibold text-slate-200 flex items-center gap-2">
-                                                    <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${el.tagColor}`}>
-                                                        {el.code}
-                                                    </span>
-                                                    {el.name}
-                                                </div>
-                                                <div className="text-[11px] text-slate-500 mt-0.5">{el.desc}</div>
-                                            </div>
-                                            {selectedElement === el.id && (
-                                                <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#06b6d4]"></span>
-                                            )}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Flight & Location Metadata */}
-                            <div className="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800 space-y-3">
-                                <label className="block text-[11px] font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center justify-between">
-                                    <span>Site Details</span>
-                                    <span className="text-[10px] text-slate-500">Optional</span>
-                                </label>
                                 
-                                <div className="grid grid-cols-2 gap-2 text-xs">
-                                    <div>
-                                        <span className="text-slate-400 text-[10px] block mb-1">Tower / Wing</span>
-                                        <input
-                                            type="text"
-                                            value={towerId}
-                                            onChange={(e) => setTowerId(e.target.value)}
-                                            className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg px-2.5 py-1.5 text-xs font-mono focus:border-amber-500 focus:outline-none"
-                                        />
+                                <div className="flex items-center space-x-2.5 font-mono">
+                                    <span className="font-extrabold text-sm tracking-wider text-white">AEROSTRUCT</span>
+                                    <span className="text-slate-600">|</span>
+                                    <span className="text-cyan-400 font-semibold uppercase tracking-wider text-[11px]">DIGITAL TWIN</span>
+                                    <span className="text-slate-600 hidden sm:inline">|</span>
+                                    <span className="text-slate-300 hidden sm:inline">Project: <strong className="text-white">AURORA TOWER</strong></span>
+                                    <span className="text-slate-600 hidden md:inline">|</span>
+                                    <div className="hidden md:flex items-center gap-1.5">
+                                        <span className="text-slate-400">SITE STATUS:</span>
+                                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                            ON TRACK
+                                        </span>
                                     </div>
-                                    <div>
-                                        <span className="text-slate-400 text-[10px] block mb-1">Floor Level</span>
-                                        <input
-                                            type="text"
-                                            value={floorNumber}
-                                            onChange={(e) => setFloorNumber(e.target.value)}
-                                            className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg px-2.5 py-1.5 text-xs font-mono focus:border-amber-500 focus:outline-none"
-                                        />
+                                    <span className="text-slate-600 hidden lg:inline">|</span>
+                                    <span className="text-slate-400 hidden lg:inline">18:24 PM</span>
+                                </div>
+                            </div>
+
+                            {/* Right Actions: Search, Notification dot, User badge, and PDF Export */}
+                            <div className="flex items-center space-x-3">
+                                <div className="hidden sm:flex items-center space-x-2">
+                                    <button className="w-8 h-8 rounded-lg bg-obsidian-850 border border-slate-700/60 flex items-center justify-center text-slate-400 hover:text-cyan-300 transition-colors">
+                                        <SearchIcon className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button className="w-8 h-8 rounded-lg bg-obsidian-850 border border-slate-700/60 flex items-center justify-center text-slate-400 hover:text-cyan-300 transition-colors relative">
+                                        <BellIcon className="w-3.5 h-3.5" />
+                                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 absolute top-2 right-2"></span>
+                                    </button>
+                                </div>
+
+                                {/* User pill */}
+                                <div className="flex items-center space-x-2 bg-obsidian-850/90 border border-cyan-500/20 px-2.5 py-1 rounded-full text-xs">
+                                    <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-[10px] font-bold text-white">
+                                        AC
+                                    </div>
+                                    <span className="text-slate-200 font-medium text-xs hidden md:inline">Alex Chen</span>
+                                </div>
+
+                                {/* Download PDF Report Button */}
+                                <button
+                                    onClick={() => window.print()}
+                                    className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5 shadow-md shadow-cyan-600/30"
+                                    title="Export Clean Engineering Report PDF"
+                                >
+                                    <DownloadIcon className="w-3.5 h-3.5 text-white" />
+                                    <span>Report PDF</span>
+                                </button>
+                            </div>
+                        </header>
+
+                        {/* Top Secondary Tab Navigation */}
+                        <div className="twin-card border-b border-cyan-500/10 px-5 py-2 flex items-center justify-between text-xs font-mono">
+                            <div className="flex items-center space-x-2">
+                                <button
+                                    onClick={() => setActiveTab('inspector')}
+                                    className={`px-3 py-1 rounded-lg transition-all flex items-center gap-1.5 ${
+                                        activeTab === 'inspector'
+                                            ? 'bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 shadow-sm shadow-cyan-500/20 font-semibold'
+                                            : 'text-slate-400 hover:text-slate-200'
+                                    }`}
+                                >
+                                    <EyeIcon className="w-3.5 h-3.5" />
+                                    Digital Twin Inspector
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('comparison')}
+                                    className={`px-3 py-1 rounded-lg transition-all flex items-center gap-1.5 ${
+                                        activeTab === 'comparison'
+                                            ? 'bg-indigo-500/20 border border-indigo-500/50 text-indigo-300 shadow-sm shadow-indigo-500/20 font-semibold'
+                                            : 'text-slate-400 hover:text-slate-200'
+                                    }`}
+                                >
+                                    <LayersIcon className="w-3.5 h-3.5" />
+                                    Drone vs. Manual Matrix
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('methodology')}
+                                    className={`px-3 py-1 rounded-lg transition-all flex items-center gap-1.5 ${
+                                        activeTab === 'methodology'
+                                            ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 shadow-sm shadow-emerald-500/20 font-semibold'
+                                            : 'text-slate-400 hover:text-slate-200'
+                                    }`}
+                                >
+                                    <ShieldCheckIcon className="w-3.5 h-3.5" />
+                                    AEC Methodology
+                                </button>
+                            </div>
+
+                            <div className="hidden sm:flex items-center space-x-2 text-[11px] text-slate-400">
+                                <span>AERO-TWIN v3.0</span>
+                                <span className="text-slate-600">&bull;</span>
+                                <span className="text-emerald-400 flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    SYSTEM READY
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Main Work Area: Side-by-Side Digital Twin Layout */}
+                        <div className="flex-1 flex flex-col md:flex-row">
+                            {/* LEFT SIDEBAR: "Project Timelines & Controls" (Styled like reference photo) */}
+                            <aside className="w-full md:w-80 lg:w-96 twin-card border-r border-cyan-500/15 p-4 flex flex-col space-y-4 shrink-0">
+                                {/* Section Header */}
+                                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                                    <div className="flex items-center space-x-2">
+                                        <span className="w-1.5 h-3.5 rounded bg-cyan-400"></span>
+                                        <h2 className="text-xs font-mono font-bold tracking-wider uppercase text-white">
+                                            PROJECT CONTROLS
+                                        </h2>
+                                    </div>
+                                    <span className="pill-badge pill-emerald">Active</span>
+                                </div>
+
+                                {/* Structural Element Selector */}
+                                <div>
+                                    <label className="block text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                                        <span>Target Element</span>
+                                        <span className="text-cyan-400 font-normal">Select Member</span>
+                                    </label>
+                                    <div className="grid grid-cols-2 gap-1.5">
+                                        {STRUCTURAL_ELEMENTS.map(el => {
+                                            const isSelected = selectedElement === el.id;
+                                            return (
+                                                <button
+                                                    key={el.id}
+                                                    onClick={() => {
+                                                        setSelectedElement(el.id);
+                                                        setInspectionResult(null);
+                                                    }}
+                                                    className={`p-2 rounded-xl border text-xs text-left transition-all relative ${
+                                                        isSelected
+                                                            ? 'bg-gradient-to-r from-cyan-950/70 to-blue-950/70 border-cyan-400 text-white shadow-md shadow-cyan-500/20 ring-1 ring-cyan-400/40'
+                                                            : 'bg-obsidian-900/60 border-slate-800/80 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="font-semibold">{el.name}</span>
+                                                        <span className={`text-[9px] font-mono px-1 py-0.2 rounded border ${
+                                                            isSelected ? 'border-cyan-400/60 text-cyan-300' : 'border-slate-700 text-slate-500'
+                                                        }`}>
+                                                            {el.code}
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            );
+                                        })}
                                     </div>
                                 </div>
 
-                                <div>
-                                    <span className="text-slate-400 text-[10px] block mb-1">Camera Angle</span>
-                                    <div className="grid grid-cols-3 gap-1.5">
-                                        {['30', '45', '90'].map(deg => (
+                                {/* Location & Viewpoint Controls */}
+                                <div className="bg-obsidian-900/70 rounded-xl p-3 border border-slate-800/80 space-y-2.5">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[11px] font-mono uppercase tracking-wider text-slate-300 font-semibold">
+                                            LOCATION PARAMETERS
+                                        </span>
+                                        <span className="text-[10px] text-cyan-400 font-mono">BIM Coordinate</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-2 text-xs">
+                                        <div>
+                                            <span className="text-slate-400 text-[10px] block mb-1">Building Tower</span>
+                                            <input
+                                                type="text"
+                                                value={towerId}
+                                                onChange={(e) => setTowerId(e.target.value)}
+                                                className="w-full bg-obsidian-950 border border-slate-800 focus:border-cyan-400 text-white rounded-lg px-2.5 py-1.5 text-xs font-mono outline-none"
+                                            />
+                                        </div>
+                                        <div>
+                                            <span className="text-slate-400 text-[10px] block mb-1">Floor Elevation</span>
+                                            <input
+                                                type="text"
+                                                value={floorNumber}
+                                                onChange={(e) => setFloorNumber(e.target.value)}
+                                                className="w-full bg-obsidian-950 border border-slate-800 focus:border-cyan-400 text-white rounded-lg px-2.5 py-1.5 text-xs font-mono outline-none"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <span className="text-slate-400 text-[10px] block mb-1">Gimbal Viewpoint</span>
+                                        <div className="grid grid-cols-3 gap-1.5">
+                                            {['30', '45', '90'].map(deg => (
+                                                <button
+                                                    key={deg}
+                                                    onClick={() => setFlightAngle(deg)}
+                                                    className={`py-1 text-xs font-mono rounded-lg border transition-all ${
+                                                        flightAngle === deg
+                                                            ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 font-semibold'
+                                                            : 'bg-obsidian-950 border-slate-800 text-slate-400 hover:text-white'
+                                                    }`}
+                                                >
+                                                    {deg}° {deg === '90' ? '(Top)' : '(Angled)'}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Instant Test Samples (1-Click) */}
+                                <div className="bg-obsidian-900/60 rounded-xl p-3 border border-slate-800/80">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-[11px] font-mono font-bold text-slate-300 uppercase tracking-wider">
+                                            QUICK SAMPLES (1-CLICK)
+                                        </span>
+                                        <span className="pill-badge pill-cyan">Instant</span>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                        {BUILTIN_SAMPLES.map(sample => (
                                             <button
-                                                key={deg}
-                                                onClick={() => setFlightAngle(deg)}
-                                                className={`py-1.5 text-xs font-mono rounded-lg border transition-all ${
-                                                    flightAngle === deg
-                                                        ? 'bg-amber-600/90 border-amber-400 text-white font-bold shadow-sm shadow-amber-600/20'
-                                                        : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                                                key={sample.id}
+                                                onClick={() => loadSample(sample)}
+                                                className={`w-full text-left p-2 rounded-lg text-xs transition-all border flex items-center justify-between ${
+                                                    !sample.isConstruction
+                                                        ? 'border-rose-900/60 bg-rose-950/20 text-rose-300 hover:bg-rose-950/40'
+                                                        : 'border-slate-800 bg-obsidian-950/50 text-slate-300 hover:border-cyan-500 hover:text-cyan-200'
                                                 }`}
                                             >
-                                                {deg === '90' ? 'Top-down' : `${deg}° angle`}
+                                                <span className="truncate pr-2 font-medium">{sample.name}</span>
+                                                <span className={`text-[10px] font-mono shrink-0 px-2 py-0.5 rounded border ${
+                                                    !sample.isConstruction ? 'border-rose-800 text-rose-300' : 'border-emerald-800/80 text-emerald-400 bg-emerald-950/40'
+                                                }`}>
+                                                    {sample.statusText}
+                                                </span>
                                             </button>
                                         ))}
                                     </div>
                                 </div>
-                            </div>
+                            </aside>
 
-                            {/* Quick Test Demo Samples (Zero CORS, 100% Offline Reliable) */}
-                            <div className="bg-slate-900/50 rounded-xl p-3.5 border border-slate-800/80">
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="text-[11px] font-mono font-bold text-emerald-400 uppercase tracking-wider">
-                                        Sample Images
-                                    </span>
-                                    <span className="text-[10px] text-cyan-400 font-mono">Try one</span>
-                                </div>
-                                <div className="space-y-1.5">
-                                    {BUILTIN_SAMPLES.map((sample) => (
-                                        <button
-                                            key={sample.id}
-                                            onClick={() => loadSample(sample)}
-                                            className={`w-full text-left p-2 rounded-lg text-xs transition-all border flex items-center justify-between ${
-                                                !sample.isConstruction
-                                                    ? 'border-rose-900/70 bg-rose-950/20 text-rose-300 hover:bg-rose-950/40'
-                                                    : 'border-slate-800 bg-slate-950/40 text-slate-300 hover:border-emerald-600 hover:text-emerald-200'
-                                            }`}
-                                        >
-                                            <span className="truncate pr-2 font-medium">{sample.name}</span>
-                                            <span className={`text-[10px] font-mono shrink-0 px-2 py-0.5 rounded border ${sample.tagClass}`}>
-                                                {sample.isConstruction ? 'Concrete' : 'Selfie Test'}
-                                            </span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                        </aside>
-
-                        {/* CENTER / RIGHT WORKSPACE: Inspection Canvas & Reports */}
-                        <main className="flex-1 p-5 md:p-7 flex flex-col space-y-6">
-                            {/* Validation Rejection Alert Banner (Vibrant Coral Red) */}
-                            {validationError && (
-                                <div className={`p-4 rounded-xl border flex items-start space-x-3.5 shadow-lg ${
-                                    validationError.isWarningOnly
-                                        ? 'bg-amber-950/50 border-amber-800 text-amber-200'
-                                        : 'bg-gradient-to-r from-rose-950/70 to-red-950/60 border-rose-800/90 text-rose-100 shadow-rose-950/30'
-                                }`}>
-                                    <AlertTriangleIcon className={`w-5 h-5 shrink-0 mt-0.5 ${
-                                        validationError.isWarningOnly ? 'text-amber-400' : 'text-rose-400'
-                                    }`} />
-                                    <div className="text-xs">
-                                        <div className="font-bold text-sm mb-1 text-white flex items-center gap-2">
-                                            <span>{validationError.title}</span>
-                                            <span className="text-[10px] font-mono bg-rose-600 text-white px-2 py-0.5 rounded-full">NOT ACCEPTED</span>
-                                        </div>
-                                        <div className="leading-relaxed mb-1 text-rose-200">{validationError.reason}</div>
-                                        {validationError.fix && (
-                                            <div className="text-slate-300 text-[11px] mt-1.5 border-t border-rose-900/60 pt-1.5 font-medium">
-                                                {validationError.fix}
+                            {/* CENTER / RIGHT: Digital Twin Inspection Viewport & Findings */}
+                            <main className="flex-1 p-4 md:p-6 flex flex-col space-y-5">
+                                {/* Error rejection alert */}
+                                {validationError && (
+                                    <div className="p-4 rounded-xl border border-rose-500/50 bg-rose-950/30 text-rose-100 flex items-start space-x-3 shadow-lg">
+                                        <AlertTriangleIcon className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                                        <div className="text-xs">
+                                            <div className="font-bold text-sm text-white mb-0.5 flex items-center gap-2">
+                                                <span>{validationError.title}</span>
+                                                <span className="pill-badge pill-rose text-[10px]">FILTERED</span>
                                             </div>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Inspection Photo Canvas & HUD Area */}
-                            <section className="glass-panel rounded-2xl border border-cyber-border p-5 shadow-2xl relative overflow-hidden">
-                                {images.length === 0 ? (
-                                    <div
-                                        onClick={() => fileInputRef.current?.click()}
-                                        onDragOver={(e) => e.preventDefault()}
-                                        onDrop={async (e) => {
-                                            e.preventDefault();
-                                            const dropped = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
-                                            if (dropped.length) {
-                                                const processed = await Promise.all(dropped.map(processUploadedFile));
-                                                setImages(processed.slice(0, 3));
-                                                setSelectedImageIndex(0);
-                                                setValidationError(null);
-                                            }
-                                        }}
-                                        className="border-2 border-dashed border-slate-700/80 hover:border-cyan-500 bg-slate-900/40 hover:bg-slate-900/80 rounded-xl p-10 text-center cursor-pointer transition-all flex flex-col items-center justify-center group"
-                                    >
-                                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-950 to-blue-900 border border-cyan-800 flex items-center justify-center text-cyan-400 mb-3 group-hover:scale-110 transition-transform shadow-lg">
-                                            <CameraIcon className="w-7 h-7" />
-                                        </div>
-                                        <h3 className="text-base font-heading font-bold text-white mb-1">
-                                            Upload Inspection Photos
-                                        </h3>
-                                        <p className="text-xs text-slate-400 max-w-md">
-                                            Drag and drop site photographs here, or click to browse. You can also try one of the sample images in the left panel.
-                                        </p>
-                                        <div className="mt-3.5 flex items-center gap-2.5">
-                                            <span className="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded-full border border-cyan-800">
-                                                Max 3 Photos per Run
-                                            </span>
-                                            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-800">
-                                                Non-structural photos are filtered out
-                                            </span>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        {/* HUD Control Bar */}
-                                        <div className="flex items-center justify-between flex-wrap gap-3 mb-3.5">
-                                            <div className="flex items-center space-x-2">
-                                                {images.map((img, idx) => (
-                                                    <button
-                                                        key={idx}
-                                                        onClick={() => setSelectedImageIndex(idx)}
-                                                        className={`relative rounded-lg overflow-hidden border-2 transition-all ${
-                                                            selectedImageIndex === idx
-                                                                ? 'border-cyan-400 ring-2 ring-cyan-500/30'
-                                                                : 'border-slate-800 opacity-60 hover:opacity-100'
-                                                        }`}
-                                                    >
-                                                        <img src={img.preview} alt="" className="w-14 h-11 object-cover" />
-                                                        <span className="absolute bottom-0 right-0 bg-black/80 font-mono text-[9px] px-1 text-white">
-                                                            #{idx + 1}
-                                                        </span>
-                                                    </button>
-                                                ))}
-
-                                                <button
-                                                    onClick={() => fileInputRef.current?.click()}
-                                                    className="w-14 h-11 rounded-lg border border-dashed border-slate-700 bg-slate-900/60 flex items-center justify-center text-slate-400 hover:text-white hover:border-cyan-500 text-xs"
-                                                    title="Add more photos"
-                                                >
-                                                    + Add
-                                                </button>
-                                            </div>
-
-                                            {/* Action Toggles */}
-                                            <div className="flex items-center space-x-3 text-xs">
-                                                {inspectionResult && inspectionResult.boxes && inspectionResult.boxes.length > 0 && (
-                                                    <button
-                                                        onClick={() => setShowBoundingBoxes(!showBoundingBoxes)}
-                                                        className={`px-3 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-all ${
-                                                            showBoundingBoxes
-                                                                ? 'bg-cyan-950/80 border-cyan-500 text-cyan-300'
-                                                                : 'bg-slate-900 border-slate-800 text-slate-400'
-                                                        }`}
-                                                    >
-                                                        <EyeIcon className="w-3.5 h-3.5" />
-                                                        <span>Highlight Findings ({inspectionResult.boxes.length})</span>
-                                                    </button>
-                                                )}
-
-                                                <button
-                                                    onClick={() => removeImage(selectedImageIndex)}
-                                                    className="text-xs text-rose-400 hover:text-rose-300 bg-rose-950/30 border border-rose-900/60 px-2.5 py-1.5 rounded-lg transition-colors"
-                                                >
-                                                    Remove Current
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        {/* Main Photographic HUD Viewport */}
-                                        <div className="relative rounded-xl overflow-hidden bg-black aspect-[16/9] border border-slate-800 flex items-center justify-center group shadow-2xl">
-                                            {/* Corner marks */}
-                                            <div className="crosshair-corner top-3 left-3 border-t border-l border-cyan-400/80"></div>
-                                            <div className="crosshair-corner top-3 right-3 border-t border-r border-cyan-400/80"></div>
-                                            <div className="crosshair-corner bottom-3 left-3 border-b border-l border-cyan-400/80"></div>
-                                            <div className="crosshair-corner bottom-3 right-3 border-b border-r border-cyan-400/80"></div>
-
-                                            {/* Site Image */}
-                                            <img
-                                                src={activeImg?.preview}
-                                                alt="Inspection Target"
-                                                className="w-full h-full object-contain"
-                                            />
-
-                                            {/* Scanning Animation */}
-                                            {isAnalyzing && (
-                                                <div className="scan-animation pointer-events-none"></div>
+                                            <p className="text-rose-200/90 leading-relaxed mb-1">{validationError.reason}</p>
+                                            {validationError.fix && (
+                                                <p className="text-slate-300 text-[11px] pt-1 border-t border-rose-800/40">{validationError.fix}</p>
                                             )}
-
-                                            {/* Bounding Box Overlays with Multi-Color Severity */}
-                                            {inspectionResult && showBoundingBoxes && inspectionResult.boxes && (
-                                                <div className="absolute inset-0 pointer-events-none">
-                                                    {inspectionResult.boxes.map(box => {
-                                                        const borderColor = box.severity === 'critical' ? 'border-rose-500 bg-rose-500/20 shadow-[0_0_12px_rgba(244,63,94,0.4)]' : box.severity === 'moderate' ? 'border-amber-500 bg-amber-500/20 shadow-[0_0_12px_rgba(245,158,11,0.4)]' : box.severity === 'tolerance' ? 'border-emerald-500 bg-emerald-500/20 shadow-[0_0_12px_rgba(16,185,129,0.4)]' : 'border-cyan-500 bg-cyan-500/20';
-                                                        const badgeColor = box.severity === 'critical' ? 'bg-rose-600' : box.severity === 'moderate' ? 'bg-amber-600' : box.severity === 'tolerance' ? 'bg-emerald-600' : 'bg-cyan-600';
-                                                        
-                                                        return (
-                                                            <div
-                                                                key={box.id}
-                                                                className={`absolute border-2 ${borderColor} rounded transition-all`}
-                                                                style={{
-                                                                    left: `${box.x}%`,
-                                                                    top: `${box.y}%`,
-                                                                    width: `${box.w}%`,
-                                                                    height: `${box.h}%`
-                                                                }}
-                                                            >
-                                                                <span className={`absolute -top-5 left-0 ${badgeColor} text-white font-mono text-[9px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-auto whitespace-nowrap`}>
-                                                                    {box.label}
-                                                                </span>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            )}
-
-                                            {/* Label overlay */}
-                                            <div className="absolute top-3 left-10 text-[11px] tracking-wide text-slate-100 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10 capitalize">
-                                                {selectedElement} &middot; Floor {floorNumber}
-                                            </div>
-                                        </div>
-
-                                        {/* Action Bar with Fresh Multi-Hue Gradient Button */}
-                                        <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/70 p-4 rounded-xl border border-slate-800 shadow-md">
-                                            <div className="text-xs text-slate-300">
-                                                Ready to inspect <strong className="text-cyan-400 font-semibold capitalize">{selectedElement}</strong> at Floor {floorNumber} ({towerId}).
-                                            </div>
-
-                                            <button
-                                                onClick={runInspection}
-                                                disabled={isAnalyzing}
-                                                className={`w-full sm:w-auto px-7 py-3 rounded-xl font-heading font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2.5 shadow-lg ${
-                                                    isAnalyzing
-                                                        ? 'bg-slate-700 text-white cursor-not-allowed opacity-80'
-                                                        : 'bg-gradient-to-r from-cyan-500 via-cyan-400 to-cyan-500 hover:from-cyan-400 hover:to-cyan-300 text-slate-950 shadow-cyan-500/25 active:scale-95'
-                                                }`}
-                                            >
-                                                {isAnalyzing ? (
-                                                    <>
-                                                        <RefreshIcon className="w-4 h-4 animate-spin text-white" />
-                                                        <span>{analysisProgress || 'Inspecting Structure...'}</span>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <CpuIcon className="w-4 h-4 text-slate-900" />
-                                                        <span>Run Inspection</span>
-                                                    </>
-                                                )}
-                                            </button>
                                         </div>
                                     </div>
                                 )}
 
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    onChange={handleFileSelect}
-                                    accept="image/*"
-                                    multiple
-                                    className="hidden"
-                                />
-                            </section>
-
-                            {/* INSPECTION RESULTS & REPORT DASHBOARD */}
-                            {inspectionResult && (
-                                <section className="glass-panel-glow rounded-2xl p-5 md:p-7 space-y-6">
-                                    {/* Report Header Banner with Color-Coded Score Badge */}
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-slate-800 gap-3">
-                                        <div>
-                                            <div className="flex items-center gap-3 mb-1">
-                                                <h2 className="text-xl font-heading font-bold text-white tracking-tight">
-                                                    Structural Quality Assessment Report
-                                                </h2>
-                                                <span className={`px-3 py-1 rounded-full text-xs font-mono font-bold border shadow-sm ${
-                                                    inspectionResult.meta.healthScore >= 85
-                                                        ? 'bg-emerald-950 border-emerald-600 text-emerald-300'
-                                                        : inspectionResult.meta.healthScore >= 70
-                                                        ? 'bg-amber-950 border-amber-600 text-amber-300'
-                                                        : 'bg-rose-950 border-rose-600 text-rose-300'
-                                                }`}>
-                                                    {inspectionResult.meta.severityRating}
-                                                </span>
+                                {/* Digital Twin Hologram & Photo Canvas Viewport */}
+                                <section className="twin-viewport rounded-2xl p-4 relative overflow-hidden">
+                                    {images.length === 0 ? (
+                                        <div
+                                            onClick={() => fileInputRef.current?.click()}
+                                            onDragOver={(e) => e.preventDefault()}
+                                            onDrop={async (e) => {
+                                                e.preventDefault();
+                                                const dropped = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
+                                                if (dropped.length) {
+                                                    const processed = await Promise.all(dropped.map(processUploadedFile));
+                                                    setImages(processed.slice(0, 3));
+                                                    setSelectedImageIndex(0);
+                                                    setValidationError(null);
+                                                }
+                                            }}
+                                            className="border-2 border-dashed border-cyan-500/30 hover:border-cyan-400 bg-obsidian-900/40 hover:bg-obsidian-900/80 rounded-xl p-10 text-center cursor-pointer transition-all flex flex-col items-center justify-center group"
+                                        >
+                                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-950 to-indigo-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400 mb-3 group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/20">
+                                                <CameraIcon className="w-7 h-7" />
                                             </div>
-                                            <p className="text-xs text-slate-400">
-                                                {inspectionResult.meta.element} • Floor {inspectionResult.meta.floor} • {inspectionResult.meta.tower} • {inspectionResult.meta.timestamp}
-                                            </p>
-                                        </div>
-
-                                    </div>
-
-                                    {/* 1. What we observed (plain language) */}
-                                    <div>
-                                        <h3 className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider mb-3.5 flex items-center gap-2">
-                                            <LayersIcon className="w-4 h-4 text-amber-400" />
-                                            1. What We Observed
-                                        </h3>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                                            {INSPECTION_PARAMETERS.map(param => {
-                                                const m = inspectionResult.metrics[param.key];
-                                                if (!m) return null;
-
-                                                const isPass = m.status === 'PASS';
-                                                const isAction = m.status === 'ACTION REQUIRED';
-
-                                                return (
-                                                    <div
-                                                        key={param.key}
-                                                        className={`p-4 rounded-xl border transition-all ${
-                                                            isPass
-                                                                ? 'bg-slate-900/60 border-slate-800 hover:border-emerald-800/60'
-                                                                : isAction
-                                                                ? 'bg-rose-950/20 border-rose-800/60 hover:border-rose-700'
-                                                                : 'bg-amber-950/20 border-amber-800/60 hover:border-amber-700'
-                                                        }`}
-                                                    >
-                                                        <div className="flex items-center justify-between mb-2">
-                                                            <div className="flex items-center space-x-2">
-                                                                <span className={`w-2.5 h-2.5 rounded-full ${
-                                                                    isPass ? 'bg-emerald-400 shadow-[0_0_8px_#10b981]' : isAction ? 'bg-rose-500 shadow-[0_0_8px_#f43f5e]' : 'bg-amber-400 shadow-[0_0_8px_#f59e0b]'
-                                                                }`}></span>
-                                                                <span className="text-sm font-bold text-white">{m.name}</span>
-                                                            </div>
-                                                            <span className={`font-mono text-[11px] font-bold px-2 py-0.5 rounded border ${
-                                                                isPass
-                                                                    ? 'bg-emerald-950/80 text-emerald-300 border-emerald-800'
-                                                                    : isAction
-                                                                    ? 'bg-rose-950/80 text-rose-300 border-rose-800'
-                                                                    : 'bg-amber-950/80 text-amber-300 border-amber-800'
-                                                            }`}>
-                                                                {isPass ? 'Looks Good' : isAction ? 'Needs Repair' : 'Needs Attention'}
-                                                            </span>
-                                                        </div>
-
-                                                        <p className="text-xs text-slate-400 leading-relaxed">
-                                                            {m.detail}
-                                                        </p>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    {/* 2. Recommended actions */}
-                                    {inspectionResult.remedialActions && inspectionResult.remedialActions.length > 0 && (
-                                        <div className="bg-slate-900/60 rounded-xl p-4 md:p-5 border border-slate-800/80">
-                                            <h3 className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-2.5 flex items-center gap-2">
-                                                <CheckIcon className="w-4 h-4 text-emerald-400" />
-                                                2. What Should Be Done
+                                            <h3 className="text-base font-bold text-white mb-1">
+                                                Upload Drone Structural Imagery
                                             </h3>
-                                            <ul className="space-y-1.5">
-                                                {inspectionResult.remedialActions.map((action, i) => (
-                                                    <li key={i} className="flex items-start text-xs text-slate-300">
-                                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 mr-2 shrink-0"></span>
-                                                        <span>{action}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                            <p className="text-xs text-slate-400 max-w-md">
+                                                Drag & drop high-resolution site photographs here, or choose one of the instant samples from the left panel.
+                                            </p>
+                                            <div className="mt-3 flex items-center gap-2">
+                                                <span className="pill-badge pill-cyan">Digital Twin Viewport</span>
+                                                <span className="pill-badge pill-emerald">Pre-Flight Computer Vision Filter Active</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            {/* Photo Selector Bar */}
+                                            <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+                                                <div className="flex items-center space-x-2">
+                                                    {images.map((img, idx) => (
+                                                        <button
+                                                            key={idx}
+                                                            onClick={() => setSelectedImageIndex(idx)}
+                                                            className={`relative rounded-lg overflow-hidden border-2 transition-all ${
+                                                                selectedImageIndex === idx
+                                                                    ? 'border-cyan-400 ring-2 ring-cyan-500/30'
+                                                                    : 'border-slate-800 opacity-60 hover:opacity-100'
+                                                            }`}
+                                                        >
+                                                            <img src={img.preview} alt="" className="w-14 h-10 object-cover" />
+                                                            <span className="absolute bottom-0 right-0 bg-black/80 font-mono text-[9px] px-1 text-white">
+                                                                #{idx + 1}
+                                                            </span>
+                                                        </button>
+                                                    ))}
+
+                                                    <button
+                                                        onClick={() => fileInputRef.current?.click()}
+                                                        className="w-14 h-10 rounded-lg border border-dashed border-slate-700 bg-obsidian-900/60 flex items-center justify-center text-slate-400 hover:text-white hover:border-cyan-500 text-xs"
+                                                        title="Add more photos"
+                                                    >
+                                                        + Add
+                                                    </button>
+                                                </div>
+
+                                                <div className="flex items-center space-x-2.5">
+                                                    {inspectionResult && inspectionResult.boxes && inspectionResult.boxes.length > 0 && (
+                                                        <button
+                                                            onClick={() => setShowBoundingBoxes(!showBoundingBoxes)}
+                                                            className={`px-3 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-all ${
+                                                                showBoundingBoxes
+                                                                    ? 'bg-cyan-950/80 border-cyan-400 text-cyan-300'
+                                                                    : 'bg-obsidian-900 border-slate-800 text-slate-400'
+                                                            }`}
+                                                        >
+                                                            <EyeIcon className="w-3.5 h-3.5" />
+                                                            <span>Visual Annotations ({inspectionResult.boxes.length})</span>
+                                                        </button>
+                                                    )}
+
+                                                    <button
+                                                        onClick={() => removeImage(selectedImageIndex)}
+                                                        className="text-xs text-rose-400 hover:text-rose-300 bg-rose-950/30 border border-rose-900/60 px-2.5 py-1.5 rounded-lg transition-colors"
+                                                    >
+                                                        Remove Photo
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            {/* Digital Twin Viewport (Matching Reference Holographic Viewport) */}
+                                            <div className="relative rounded-xl overflow-hidden bg-black aspect-[16/9] border border-cyan-500/20 flex items-center justify-center shadow-2xl">
+                                                {/* Futuristic Holographic Reticle Brackets */}
+                                                <div className="reticle-corner top-3 left-3 border-t-2 border-l-2"></div>
+                                                <div className="reticle-corner top-3 right-3 border-t-2 border-r-2"></div>
+                                                <div className="reticle-corner bottom-3 left-3 border-b-2 border-l-2"></div>
+                                                <div className="reticle-corner bottom-3 right-3 border-b-2 border-r-2"></div>
+
+                                                {/* Floating Digital Twin Pills (Inspired by Constructio reference screenshot) */}
+                                                <div className="absolute top-3 left-4 flex items-center gap-2 z-10">
+                                                    <span className="pill-badge pill-emerald shadow-lg backdrop-blur-md">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                                        Active
+                                                    </span>
+                                                    <span className="pill-badge pill-cyan shadow-lg backdrop-blur-md capitalize">
+                                                        {selectedElement} &bull; Floor {floorNumber}
+                                                    </span>
+                                                </div>
+
+                                                <div className="absolute top-3 right-4 z-10">
+                                                    <span className="pill-badge pill-indigo shadow-lg backdrop-blur-md">
+                                                        {towerId}
+                                                    </span>
+                                                </div>
+
+                                                {/* Inspected image */}
+                                                <img
+                                                    src={activeImg?.preview}
+                                                    alt="Inspection Target"
+                                                    className="w-full h-full object-contain"
+                                                />
+
+                                                {/* Dynamic scanning animation */}
+                                                {isAnalyzing && (
+                                                    <div className="scan-animation pointer-events-none"></div>
+                                                )}
+
+                                                {/* Bounding box defect overlay */}
+                                                {inspectionResult && showBoundingBoxes && inspectionResult.boxes && (
+                                                    <div className="absolute inset-0 pointer-events-none">
+                                                        {inspectionResult.boxes.map(box => {
+                                                            const borderColor = box.severity === 'critical' ? 'border-rose-500 bg-rose-500/15' : box.severity === 'moderate' ? 'border-amber-400 bg-amber-400/15' : 'border-cyan-400 bg-cyan-400/15';
+                                                            const badgeColor = box.severity === 'critical' ? 'bg-rose-600' : box.severity === 'moderate' ? 'bg-amber-600' : 'bg-cyan-600';
+                                                            
+                                                            return (
+                                                                <div
+                                                                    key={box.id}
+                                                                    className={`absolute border-2 ${borderColor} rounded transition-all`}
+                                                                    style={{
+                                                                        left: `${box.x}%`,
+                                                                        top: `${box.y}%`,
+                                                                        width: `${box.w}%`,
+                                                                        height: `${box.h}%`
+                                                                    }}
+                                                                >
+                                                                    <span className={`absolute -top-5 left-0 ${badgeColor} text-white font-mono text-[9px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-auto whitespace-nowrap`}>
+                                                                        {box.label}
+                                                                    </span>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Action Bar with Electric Gradient Button */}
+                                            <div className="mt-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 bg-obsidian-900/80 p-3.5 rounded-xl border border-cyan-500/20">
+                                                <div className="text-xs text-slate-300">
+                                                    Target element: <strong className="text-cyan-400 capitalize">{selectedElement}</strong> at Floor {floorNumber} ({towerId}).
+                                                </div>
+
+                                                <button
+                                                    onClick={runInspection}
+                                                    disabled={isAnalyzing}
+                                                    className={`w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-xs tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg ${
+                                                        isAnalyzing
+                                                            ? 'bg-slate-700 text-slate-300 cursor-not-allowed'
+                                                            : 'bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white shadow-cyan-500/30 active:scale-95'
+                                                    }`}
+                                                >
+                                                    {isAnalyzing ? (
+                                                        <>
+                                                            <RefreshIcon className="w-4 h-4 animate-spin text-white" />
+                                                            <span>{analysisProgress || 'Inspecting...'}</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <CpuIcon className="w-4 h-4 text-cyan-200" />
+                                                            <span>Execute Structural Analysis</span>
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
 
-                                    {/* 3. Final summary at the end */}
-                                    <div className="bg-slate-900/60 rounded-xl p-4 md:p-5 border border-cyan-900/60">
-                                        <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                            <ShieldCheckIcon className="w-4 h-4 text-cyan-400" />
-                                            3. Summary
-                                        </h3>
-                                        <p className="text-sm text-slate-200 leading-relaxed font-sans">
-                                            {inspectionResult.shortSummary}
-                                        </p>
-                                    </div>
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        onChange={handleFileSelect}
+                                        accept="image/*"
+                                        multiple
+                                        className="hidden"
+                                    />
                                 </section>
-                            )}
 
-                            {/* COMPARISON TAB CONTENT: Drone vs. Conventional (Slide 10 of Presentation) */}
-                            {activeTab === 'comparison' && (
-                                <section className="glass-panel rounded-2xl p-5 md:p-7 space-y-5">
-                                    <div className="border-b border-slate-800 pb-3.5">
-                                        <h2 className="text-xl font-heading font-bold text-white flex items-center gap-2">
-                                            <span>Drone Inspection vs. Conventional Inspection</span>
-                                        </h2>
-                                        <p className="text-xs text-slate-400 mt-1">
-                                            Comparative research findings by Suchita Asabe, Jahnvi & Avanti Khare (Pune High-Rise Construction).
-                                        </p>
-                                    </div>
-
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-left text-xs border-collapse">
-                                            <thead>
-                                                <tr className="border-b border-slate-800 bg-slate-900/80 font-mono text-cyan-300">
-                                                    <th className="p-3 font-semibold">Evaluation Criteria</th>
-                                                    <th className="p-3 font-semibold text-rose-300">Conventional Manual Inspection</th>
-                                                    <th className="p-3 font-semibold text-cyan-300">AeroStruct Drone Inspection</th>
-                                                    <th className="p-3 font-semibold text-emerald-300">Observed Advantage</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-800/60 font-sans text-slate-300">
-                                                <tr>
-                                                    <td className="p-3 font-bold text-white">Inspection Time</td>
-                                                    <td className="p-3 text-slate-400">Higher (4-6 hrs per floor lift via cradles)</td>
-                                                    <td className="p-3 text-cyan-200">Potentially lower (15-25 min flight)</td>
-                                                    <td className="p-3 text-emerald-400 font-semibold">~75% Time Reduction</td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-3 font-bold text-white">Worker Safety at Height</td>
-                                                    <td className="p-3 text-rose-300 font-medium">Lower (Hazardous elevated scaffold exposure)</td>
-                                                    <td className="p-3 text-emerald-300 font-medium">Improved — Zero personnel working at height</td>
-                                                    <td className="p-3 text-emerald-400 font-semibold">100% Fall Risk Elimination</td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-3 font-bold text-white">Accessibility to Facade</td>
-                                                    <td className="p-3 text-slate-400">Limited (Cantilevers, parapet edges difficult)</td>
-                                                    <td className="p-3 text-cyan-200">High (Omnidirectional standoff coverage)</td>
-                                                    <td className="p-3 text-emerald-400 font-semibold">Full 360° Elevation Access</td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-3 font-bold text-white">Defect Documentation</td>
-                                                    <td className="p-3 text-slate-400">Manual field notes & subjective photo logs</td>
-                                                    <td className="p-3 text-cyan-200">Systematic high-res imagery & digital tags</td>
-                                                    <td className="p-3 text-emerald-400 font-semibold">Verifiable Digital Traceability</td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-3 font-bold text-white">Repeatability & Auditing</td>
-                                                    <td className="p-3 text-slate-400">Variable (Depends on individual inspector)</td>
-                                                    <td className="p-3 text-cyan-200">High (Standardized flight coordinates & angles)</td>
-                                                    <td className="p-3 text-emerald-400 font-semibold">Audit-Ready Floor-by-Floor Log</td>
-                                                </tr>
-                                                <tr>
-                                                    <td className="p-3 font-bold text-white">Human Physical Effort</td>
-                                                    <td className="p-3 text-slate-400">Substantially higher</td>
-                                                    <td className="p-3 text-cyan-200">Lower for visual coverage & mapping</td>
-                                                    <td className="p-3 text-emerald-400 font-semibold">Ergonomic Ground Station Control</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </section>
-                            )}
-
-                            {/* METHODOLOGY TAB CONTENT (Slides 5-9) */}
-                            {activeTab === 'methodology' && (
-                                <section className="glass-panel rounded-2xl p-5 md:p-7 space-y-5">
-                                    <div className="border-b border-slate-800 pb-3.5">
-                                        <h2 className="text-xl font-heading font-bold text-white flex items-center gap-2">
-                                            <span>Research Methodology & Inspection Checklist</span>
-                                        </h2>
-                                        <p className="text-xs text-slate-400 mt-1">
-                                            7-step pipeline specified for high-rise residential projects in the Pune Region.
-                                        </p>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                                        {[
-                                            { step: '01', title: 'Literature Review', color: 'text-sky-400 border-sky-800', desc: 'Drone photogrammetry, building codes (IS 456), defect classification standards.' },
-                                            { step: '02', title: 'Site Identification', color: 'text-emerald-400 border-emerald-800', desc: 'Selected ongoing residential high-rise project in Pune urban agglomeration.' },
-                                            { step: '03', title: 'Quality Parameters', color: 'text-amber-400 border-amber-800', desc: 'Finalized 7 measurable visual parameters for RCC superstructure members.' },
-                                            { step: '04', title: 'Flight Planning', color: 'text-cyan-400 border-cyan-800', desc: 'Safe standoff distance, floor-by-floor routes, 30°/45°/90° gimbal viewpoints.' },
-                                            { step: '05', title: 'Data Acquisition', color: 'text-purple-400 border-purple-800', desc: 'High-res photos/videos with timestamp, floor, and tower grid coordinate tags.' },
-                                            { step: '06', title: 'Image Processing', color: 'text-rose-400 border-rose-800', desc: 'Automated filtering, anomaly bounding boxes, and tolerance deviation calculations.' },
-                                        ].map(item => (
-                                            <div key={item.step} className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-                                                <span className={`font-mono text-xs font-bold block mb-1 ${item.color}`}>STEP {item.step}</span>
-                                                <h3 className="text-sm font-bold text-white mb-1">{item.title}</h3>
-                                                <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                                {/* ========================================================
+                                    ON-SCREEN INSPECTION FINDINGS CARD
+                                    (Styled like Resource Allocation card in reference)
+                                    ======================================================== */}
+                                {inspectionResult && (
+                                    <section className="twin-card-glow rounded-2xl p-5 md:p-6 space-y-5">
+                                        {/* Status Header */}
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+                                            <div>
+                                                <div className="flex items-center gap-3">
+                                                    <h2 className="text-base font-bold text-white tracking-tight">
+                                                        Structural Quality Assessment
+                                                    </h2>
+                                                    <span className={`pill-badge ${
+                                                        inspectionResult.meta.healthScore >= 85
+                                                            ? 'pill-emerald'
+                                                            : inspectionResult.meta.healthScore >= 70
+                                                            ? 'pill-cyan'
+                                                            : 'pill-rose'
+                                                    }`}>
+                                                        {inspectionResult.meta.severityRating}
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-slate-400 mt-1">
+                                                    Target: <span className="text-cyan-300 capitalize">{inspectionResult.meta.element}</span> &bull; Floor {inspectionResult.meta.floor} ({inspectionResult.meta.tower}) &bull; Evaluated: {inspectionResult.meta.timestamp}
+                                                </p>
                                             </div>
-                                        ))}
-                                    </div>
-                                </section>
-                            )}
-                        </main>
+
+                                            <button
+                                                onClick={() => window.print()}
+                                                className="self-start sm:self-auto bg-obsidian-850 hover:bg-obsidian-800 border border-cyan-500/40 text-cyan-300 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                                            >
+                                                <DownloadIcon className="w-3.5 h-3.5" />
+                                                <span>Download PDF Report</span>
+                                            </button>
+                                        </div>
+
+                                        {/* 1. What We Observed */}
+                                        <div>
+                                            <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                                <LayersIcon className="w-4 h-4 text-cyan-400" />
+                                                1. Observed Parameters
+                                            </h3>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                                                {INSPECTION_PARAMETERS.map(param => {
+                                                    const m = inspectionResult.metrics[param.key];
+                                                    if (!m) return null;
+                                                    const isPass = m.status === 'PASS';
+                                                    const isAction = m.status === 'ACTION REQUIRED';
+
+                                                    return (
+                                                        <div
+                                                            key={param.key}
+                                                            className="p-3 rounded-xl border border-slate-800/80 bg-obsidian-900/60"
+                                                        >
+                                                            <div className="flex items-center justify-between mb-1.5">
+                                                                <div className="flex items-center space-x-2">
+                                                                    <span className={`w-2 h-2 rounded-full ${
+                                                                        isPass ? 'bg-emerald-400' : isAction ? 'bg-rose-500' : 'bg-cyan-400'
+                                                                    }`}></span>
+                                                                    <span className="text-xs font-bold text-white">{m.name}</span>
+                                                                </div>
+                                                                <span className={`pill-badge text-[10px] ${
+                                                                    isPass ? 'pill-emerald' : isAction ? 'pill-rose' : 'pill-cyan'
+                                                                }`}>
+                                                                    {isPass ? 'Looks Good' : isAction ? 'Needs Repair' : 'Needs Attention'}
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-xs text-slate-400 leading-relaxed">
+                                                                {m.detail}
+                                                            </p>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+
+                                        {/* 2. Action Items */}
+                                        {inspectionResult.remedialActions && inspectionResult.remedialActions.length > 0 && (
+                                            <div className="bg-obsidian-900/60 rounded-xl p-4 border border-slate-800">
+                                                <h3 className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                                    <CheckIcon className="w-4 h-4 text-emerald-400" />
+                                                    2. Recommended Contractor Actions
+                                                </h3>
+                                                <ul className="space-y-1.5">
+                                                    {inspectionResult.remedialActions.map((action, i) => (
+                                                        <li key={i} className="flex items-start text-xs text-slate-300">
+                                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 mr-2 shrink-0"></span>
+                                                            <span>{action}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+
+                                        {/* 3. Executive Summary */}
+                                        <div className="bg-obsidian-900/80 rounded-xl p-4 border border-cyan-500/25">
+                                            <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                                <ShieldCheckIcon className="w-4 h-4 text-cyan-400" />
+                                                3. Summary
+                                            </h3>
+                                            <p className="text-xs md:text-sm text-slate-200 leading-relaxed font-sans">
+                                                {inspectionResult.shortSummary}
+                                            </p>
+                                        </div>
+                                    </section>
+                                )}
+
+                                {/* Comparison Tab */}
+                                {activeTab === 'comparison' && (
+                                    <section className="twin-card rounded-2xl p-5 space-y-4">
+                                        <div className="border-b border-slate-800 pb-3">
+                                            <h2 className="text-base font-bold text-white flex items-center gap-2">
+                                                <span>Drone Inspection vs. Conventional Inspection</span>
+                                                <span className="pill-badge pill-emerald">AEC Benchmark</span>
+                                            </h2>
+                                            <p className="text-xs text-slate-400 mt-0.5">
+                                                Pune high-rise superstructure empirical research findings.
+                                            </p>
+                                        </div>
+
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left text-xs border-collapse">
+                                                <thead>
+                                                    <tr className="border-b border-slate-800 bg-obsidian-900/80 font-mono text-cyan-300">
+                                                        <th className="p-3">Evaluation Criteria</th>
+                                                        <th className="p-3 text-rose-300">Conventional Manual Inspection</th>
+                                                        <th className="p-3 text-cyan-300">AeroStruct Drone Inspection</th>
+                                                        <th className="p-3 text-emerald-300">Advantage</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                                                    <tr>
+                                                        <td className="p-3 font-semibold text-white">Inspection Time</td>
+                                                        <td className="p-3 text-slate-400">Higher (4-6 hrs per lift via cradles)</td>
+                                                        <td className="p-3 text-cyan-200">Lower (15-25 min flight)</td>
+                                                        <td className="p-3 text-emerald-400 font-semibold">~75% Time Reduction</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="p-3 font-semibold text-white">Worker Safety at Height</td>
+                                                        <td className="p-3 text-rose-300">Hazardous scaffold exposure</td>
+                                                        <td className="p-3 text-emerald-300">Zero personnel working at height</td>
+                                                        <td className="p-3 text-emerald-400 font-semibold">100% Fall Risk Elimination</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="p-3 font-semibold text-white">Facade Accessibility</td>
+                                                        <td className="p-3 text-slate-400">Limited (Cantilevers difficult)</td>
+                                                        <td className="p-3 text-cyan-200">Omnidirectional standoff coverage</td>
+                                                        <td className="p-3 text-emerald-400 font-semibold">360° Elevation Access</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="p-3 font-semibold text-white">Digital Documentation</td>
+                                                        <td className="p-3 text-slate-400">Manual field notes</td>
+                                                        <td className="p-3 text-cyan-200">High-resolution photogrammetric tags</td>
+                                                        <td className="p-3 text-emerald-400 font-semibold">Verifiable Traceability</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </section>
+                                )}
+
+                                {/* Methodology Tab */}
+                                {activeTab === 'methodology' && (
+                                    <section className="twin-card rounded-2xl p-5 space-y-4">
+                                        <div className="border-b border-slate-800 pb-3">
+                                            <h2 className="text-base font-bold text-white flex items-center gap-2">
+                                                <span>Research Methodology & Framework</span>
+                                                <span className="pill-badge pill-indigo">IS 456 Standards</span>
+                                            </h2>
+                                            <p className="text-xs text-slate-400 mt-0.5">
+                                                Seven-phase quality assessment workflow for residential high-rise superstructure elements.
+                                            </p>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                            {[
+                                                { step: '01', title: 'Literature Review', desc: 'Drone photogrammetry, building codes (IS 456), defect classification standards.' },
+                                                { step: '02', title: 'Site Identification', desc: 'Selected ongoing residential high-rise project in Pune urban agglomeration.' },
+                                                { step: '03', title: 'Quality Parameters', desc: 'Finalized measurable visual parameters for RCC superstructure members.' },
+                                                { step: '04', title: 'Flight Planning', desc: 'Safe standoff distance, floor-by-floor routes, 30°/45°/90° gimbal viewpoints.' },
+                                                { step: '05', title: 'Data Acquisition', desc: 'High-res photos/videos with timestamp, floor, and tower grid coordinate tags.' },
+                                                { step: '06', title: 'Image Processing', desc: 'Automated filtering, anomaly bounding boxes, and tolerance calculations.' }
+                                            ].map(item => (
+                                                <div key={item.step} className="p-3.5 rounded-xl bg-obsidian-900/60 border border-slate-800">
+                                                    <span className="font-mono text-xs font-bold text-cyan-400 block mb-1">PHASE {item.step}</span>
+                                                    <h3 className="text-xs font-bold text-white mb-1">{item.title}</h3>
+                                                    <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </section>
+                                )}
+                            </main>
+                        </div>
                     </div>
+
+                    {/* ========================================================
+                        DEDICATED PDF / PRINT REPORT VIEW
+                        (Strictly NO FLUFF, NO GIMMICKS: Only Clean Letterhead,
+                         Photo with Visual Annotations, and Detailed Summary)
+                        ======================================================== */}
+                    {inspectionResult && (
+                        <div className="print-only-report">
+                            {/* Formal Executive Letterhead */}
+                            <div className="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-end">
+                                <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-xl font-bold tracking-tight text-slate-950 uppercase font-mono">AEROSTRUCT</span>
+                                        <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-semibold">DIGITAL TWIN QUALITY ASSESSMENT</span>
+                                    </div>
+                                    <p className="text-xs text-slate-600 font-medium">Structural Superstructure Quality Inspection Report &bull; Drone Photogrammetry</p>
+                                </div>
+                                <div className="text-right text-xs text-slate-600 space-y-0.5 font-mono">
+                                    <p><span className="font-bold text-slate-900">Project:</span> Aurora Tower</p>
+                                    <p><span className="font-bold text-slate-900">Element:</span> <span className="capitalize">{inspectionResult.meta.element}</span> (Floor {inspectionResult.meta.floor}, {inspectionResult.meta.tower})</p>
+                                    <p><span className="font-bold text-slate-900">Date:</span> {inspectionResult.meta.timestamp}</p>
+                                    <p><span className="font-bold text-slate-900">Status:</span> {inspectionResult.meta.severityRating}</p>
+                                </div>
+                            </div>
+
+                            {/* Section 1: The Visual Photographic Inspection Analysis */}
+                            <div className="mb-6">
+                                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-2 border-b border-slate-200 pb-1 font-mono">
+                                    1. Photographic Evidence & Visual Anomaly Mapping
+                                </h2>
+                                <div className="relative rounded-lg overflow-hidden border border-slate-300 bg-slate-950 max-h-[380px] flex items-center justify-center">
+                                    <img
+                                        src={activeImg?.preview}
+                                        alt="Inspection Photo"
+                                        className="w-full h-auto max-h-[380px] object-contain"
+                                    />
+                                    {showBoundingBoxes && inspectionResult.boxes && (
+                                        <div className="absolute inset-0 pointer-events-none">
+                                            {inspectionResult.boxes.map(box => (
+                                                <div
+                                                    key={box.id}
+                                                    className="absolute border-2 border-cyan-400 rounded"
+                                                    style={{
+                                                        left: `${box.x}%`,
+                                                        top: `${box.y}%`,
+                                                        width: `${box.w}%`,
+                                                        height: `${box.h}%`
+                                                    }}
+                                                >
+                                                    <span className="absolute -top-4 left-0 bg-slate-900 text-white font-mono text-[9px] font-bold px-1.5 py-0.5 rounded shadow whitespace-nowrap">
+                                                        {box.label}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                <p className="text-[10px] text-slate-500 mt-1.5 italic">
+                                    Figure 1.1: Orthogonal / oblique aerial imagery capturing visual surface texture, vertical alignment, and formwork sleeve penetrations.
+                                </p>
+                            </div>
+
+                            {/* Section 2: Detailed Engineering Assessment (NO FLUFF) */}
+                            <div className="space-y-4">
+                                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800 border-b border-slate-200 pb-1 font-mono">
+                                    2. Detailed Engineering Assessment
+                                </h2>
+                                
+                                <div className="space-y-3 text-xs leading-relaxed text-slate-800 text-justify">
+                                    <p>
+                                        <strong>2.1 Structural Geometry & Plumbness: </strong>
+                                        {inspectionResult.detailedReport.overview}
+                                    </p>
+                                    <p>
+                                        <strong>2.2 Concrete Surface Integrity & Compaction: </strong>
+                                        {inspectionResult.detailedReport.concreteCondition}
+                                    </p>
+                                    <p>
+                                        <strong>2.3 Formwork Penetrations & Tie-Rod Sleeves: </strong>
+                                        {inspectionResult.detailedReport.tieRodsAndPlumbing}
+                                    </p>
+                                    <p className="p-3 bg-slate-50 border-l-4 border-slate-900 text-slate-900 font-medium">
+                                        <strong>2.4 Overall Engineering Assessment: </strong>
+                                        {inspectionResult.detailedReport.conclusion}
+                                    </p>
+                                </div>
+
+                                {/* Section 3: Remedial Action Checklist for Contractor */}
+                                {inspectionResult.remedialActions && inspectionResult.remedialActions.length > 0 && (
+                                    <div className="pt-2">
+                                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-2 font-mono">
+                                            3. Required Contractor Remedial Actions
+                                        </h3>
+                                        <ul className="list-disc pl-5 text-xs text-slate-800 space-y-1">
+                                            {inspectionResult.remedialActions.map((action, i) => (
+                                                <li key={i}>{action}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {/* Signoff block */}
+                                <div className="pt-8 mt-6 border-t border-slate-300 grid grid-cols-2 gap-8 text-xs text-slate-600">
+                                    <div>
+                                        <p className="font-bold text-slate-900 mb-0.5">Evaluation Protocol:</p>
+                                        <p>Photogrammetric Drone Visual Inspection</p>
+                                        <p className="text-[10px] text-slate-500 mt-1">Classification: <span className="font-semibold text-slate-800">{inspectionResult.meta.severityRating}</span></p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="font-bold text-slate-900 mb-6">Assessor Authorization:</p>
+                                        <div className="border-b border-slate-400 w-48 ml-auto"></div>
+                                        <p className="text-[10px] text-slate-500 mt-1">Superstructure Quality Inspector &bull; AeroStruct</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         }
