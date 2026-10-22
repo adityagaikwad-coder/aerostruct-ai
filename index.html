@@ -520,7 +520,7 @@
                 y: +(20 + seed(10) * 20).toFixed(1),
                 w: +(12 + seed(11) * 8).toFixed(1),
                 h: +(10 + seed(12) * 8).toFixed(1),
-                notes: 'Surface formwork penetration requiring non-shrink cementitious grout sealing.'
+                notes: 'A hole left by the formwork; it should be filled with grout.'
             });
 
             // 2. Concrete Surface Void or Honeycomb
@@ -533,7 +533,7 @@
                     y: +(40 + seed(14) * 30).toFixed(1),
                     w: +(18 + seed(15) * 12).toFixed(1),
                     h: +(14 + seed(16) * 10).toFixed(1),
-                    notes: `Cluster void ratio measured at ${voidPercentage}% surface coverage near pour joint.`
+                    notes: 'A cluster of small air pockets on the concrete surface near the pour joint.'
                 });
             }
 
@@ -547,20 +547,20 @@
                     y: +(18 + seed(18) * 35).toFixed(1),
                     w: +(22 + seed(19) * 20).toFixed(1),
                     h: +(16 + seed(20) * 18).toFixed(1),
-                    notes: `Crack width verified at ${crackWidth} mm (Allowable threshold: 0.20 mm).`
+                    notes: crackWidth > 0.20 ? 'A visible crack that is wider than it should be and needs a closer look.' : 'A very fine surface crack that is not a concern at this stage.'
                 });
             }
 
             // 4. Plumb / Grid Datum Line
             boxes.push({
                 id: 'bx-4',
-                label: `Plumb Datum (${plumbnessDeviation}mm dev)`,
+                label: isPlumbPass ? 'Vertical Line (Straight)' : 'Vertical Line (Slight Lean)',
                 severity: isPlumbPass ? 'tolerance' : 'moderate',
                 x: +(22 + seed(21) * 12).toFixed(1),
                 y: +(8 + seed(22) * 8).toFixed(1),
                 w: +(52 + seed(23) * 18).toFixed(1),
                 h: +(78 + seed(24) * 12).toFixed(1),
-                notes: `Vertical axial alignment relative to grid axis: ${plumbnessDeviation} mm deviation over 3m lift.`
+                notes: isPlumbPass ? 'The member stands straight along its full height.' : 'The member leans slightly from true vertical.'
             });
 
             // Calculate overall Health Score
@@ -574,7 +574,7 @@
             if (!tieHolesSealed) healthScore -= 5;
             healthScore = Math.max(45, Math.min(98, healthScore));
 
-            const severityRating = healthScore >= 85 ? 'ACCEPTABLE / MINOR WORK' : healthScore >= 70 ? 'MODERATE DEFECT - REMEDIAL REQUIRED' : 'CRITICAL DEFECT - NDT RECOMMENDED';
+            const severityRating = healthScore >= 85 ? 'Good Condition' : healthScore >= 70 ? 'Minor Repairs Needed' : 'Repairs Needed';
 
             return {
                 meta: {
@@ -593,49 +593,49 @@
                         measured: `${alignmentOffset} mm`,
                         limit: '±5.0 mm',
                         status: isAlignmentWithinTolerance ? 'PASS' : 'WARNING',
-                        detail: `Member vertical and grid placement shows ${alignmentOffset} mm offset relative to CAD grid line.`
+                        detail: isAlignmentWithinTolerance ? 'The member sits correctly on its grid line with no visible shift to either side.' : 'The member appears to sit slightly off its intended grid line.'
                     },
                     surface: {
                         name: 'Surface Condition',
                         measured: `${voidPercentage} %`,
                         limit: '< 2.0 %',
                         status: isSurfacePass ? 'PASS' : 'WARNING',
-                        detail: `Bug-hole density measured at ${voidPercentage}% across analyzed formwork lift.`
+                        detail: isSurfacePass ? 'The surface is mostly smooth with only a few tiny air holes.' : 'The surface shows noticeable air pockets and rough patches that need finishing.'
                     },
                     cracks: {
                         name: 'Cracks',
                         measured: hasCrack ? `${crackWidth} mm` : 'None Visible',
                         limit: '< 0.20 mm',
                         status: !hasCrack || isCrackAllowable ? 'PASS' : 'ACTION REQUIRED',
-                        detail: hasCrack ? `Localized crack trace detected with maximum width of ${crackWidth} mm.` : 'Zero observable tension or diagonal shear fissures.'
+                        detail: hasCrack ? (isCrackAllowable ? 'A fine hairline crack is visible on the surface. It is minor and should just be monitored.' : 'A visible crack runs across the surface and should be inspected and repaired.') : 'No cracks are visible on the exposed faces.'
                     },
                     dimensions: {
                         name: 'Dimensions & Formwork',
                         measured: `±${(2.0 + seed(25) * 3).toFixed(1)} mm`,
                         limit: '±6.0 mm',
                         status: 'PASS',
-                        detail: 'Cross-sectional profile conforms to structural design schedule tolerances.'
+                        detail: 'The size and shape of the member look consistent with the expected design.'
                     },
                     plumbness: {
                         name: 'Plumbness',
                         measured: `${plumbnessDeviation} mm / 3m`,
                         limit: '±5.0 mm / 3m',
                         status: isPlumbPass ? 'PASS' : 'WARNING',
-                        detail: `Vertical tilt measured at ${plumbnessDeviation} mm over 3000 mm story height.`
+                        detail: isPlumbPass ? 'The member stands upright along its full height.' : 'The member leans slightly and should be checked on site.'
                     },
                     levelness: {
                         name: 'Level / Flatness Indicators',
                         measured: `${levelnessDip} mm`,
                         limit: '±4.0 mm',
                         status: isLevelPass ? 'PASS' : 'WARNING',
-                        detail: `Horizontal plane trueness displays ${levelnessDip} mm maximum soffit dip.`
+                        detail: isLevelPass ? 'The surfaces look flat and level with no visible sagging.' : 'A slight dip or unevenness is visible and should be checked.'
                     },
                     finish: {
                         name: 'Surface Finish & Tie Sleeves',
                         measured: `${tieHolesCount} sleeves detected`,
                         limit: '100% Sealed',
                         status: tieHolesSealed ? 'PASS' : 'ACTION REQUIRED',
-                        detail: tieHolesSealed ? 'All formwork tie-rod holes properly plugged with non-shrink mortar.' : `${tieHolesCount} form-tie holes remain unsealed; requires chemical grout patching before rendering.`
+                        detail: tieHolesSealed ? 'The holes left by the formwork ties have been neatly filled.' : 'Some holes left by the formwork ties are still open and need to be filled before plastering or painting.'
                     }
                 },
                 boxes,
@@ -1227,11 +1227,11 @@
                                                         ? 'bg-amber-950 border-amber-600 text-amber-300'
                                                         : 'bg-rose-950 border-rose-600 text-rose-300'
                                                 }`}>
-                                                    Score: {inspectionResult.meta.healthScore}/100
+                                                    {inspectionResult.meta.severityRating}
                                                 </span>
                                             </div>
                                             <p className="text-xs text-slate-400">
-                                                Standard: <span className="text-amber-400 font-mono font-semibold">{inspectionResult.meta.allowableToleranceStandard}</span> • Evaluated: {inspectionResult.meta.timestamp}
+                                                {inspectionResult.meta.element} • Floor {inspectionResult.meta.floor} • {inspectionResult.meta.tower} • {inspectionResult.meta.timestamp}
                                             </p>
                                         </div>
 
@@ -1243,33 +1243,11 @@
                                         </div>
                                     </div>
 
-                                    {/* 1. Executive Summary */}
-                                    <div className="bg-slate-900/60 rounded-xl p-4 md:p-5 border border-slate-800/80">
-                                        <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                            <ShieldCheckIcon className="w-4 h-4 text-cyan-400" />
-                                            1. Executive Engineering Summary
-                                        </h3>
-                                        <p className="text-sm text-slate-200 leading-relaxed font-sans">
-                                            {inspectionResult.shortSummary}
-                                        </p>
-                                        
-                                        <div className="mt-3.5 flex items-center gap-2 text-xs">
-                                            <span className="text-slate-400 font-mono text-[11px]">CLASSIFICATION:</span>
-                                            <span className={`font-semibold px-2.5 py-0.5 rounded border ${
-                                                inspectionResult.meta.healthScore >= 85
-                                                    ? 'text-emerald-300 bg-emerald-950/70 border-emerald-800'
-                                                    : 'text-amber-300 bg-amber-950/70 border-amber-800'
-                                            }`}>
-                                                {inspectionResult.meta.severityRating}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* 2. Detailed 7-Parameter Criteria Grid with Color Coded Statuses */}
+                                    {/* 1. What we observed (plain language) */}
                                     <div>
                                         <h3 className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider mb-3.5 flex items-center gap-2">
                                             <LayersIcon className="w-4 h-4 text-amber-400" />
-                                            2. Detailed 7-Parameter Civil Evaluation (IS 456 / Research Matrix)
+                                            1. What We Observed
                                         </h3>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
@@ -1305,19 +1283,8 @@
                                                                     ? 'bg-rose-950/80 text-rose-300 border-rose-800'
                                                                     : 'bg-amber-950/80 text-amber-300 border-amber-800'
                                                             }`}>
-                                                                {m.status}
+                                                                {isPass ? 'Looks Good' : isAction ? 'Needs Repair' : 'Needs Attention'}
                                                             </span>
-                                                        </div>
-
-                                                        <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-slate-950/70 p-2.5 rounded-lg border border-slate-900 mb-2">
-                                                            <div>
-                                                                <span className="text-[10px] text-slate-500 block">MEASURED</span>
-                                                                <span className="text-cyan-300 font-bold">{m.measured}</span>
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-[10px] text-slate-500 block">TOLERANCE</span>
-                                                                <span className="text-amber-400 font-medium">{m.limit}</span>
-                                                            </div>
                                                         </div>
 
                                                         <p className="text-xs text-slate-400 leading-relaxed">
@@ -1329,12 +1296,12 @@
                                         </div>
                                     </div>
 
-                                    {/* 3. Actionable Remedial Recommendations with Emerald Accents */}
+                                    {/* 2. Recommended actions */}
                                     {inspectionResult.remedialActions && inspectionResult.remedialActions.length > 0 && (
                                         <div className="bg-slate-900/60 rounded-xl p-4 md:p-5 border border-slate-800/80">
                                             <h3 className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-2.5 flex items-center gap-2">
                                                 <CheckIcon className="w-4 h-4 text-emerald-400" />
-                                                3. Recommended Contractor Actions
+                                                2. What Should Be Done
                                             </h3>
                                             <ul className="space-y-1.5">
                                                 {inspectionResult.remedialActions.map((action, i) => (
@@ -1346,6 +1313,17 @@
                                             </ul>
                                         </div>
                                     )}
+
+                                    {/* 3. Final summary at the end */}
+                                    <div className="bg-slate-900/60 rounded-xl p-4 md:p-5 border border-cyan-900/60">
+                                        <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                            <ShieldCheckIcon className="w-4 h-4 text-cyan-400" />
+                                            3. Summary
+                                        </h3>
+                                        <p className="text-sm text-slate-200 leading-relaxed font-sans">
+                                            {inspectionResult.shortSummary}
+                                        </p>
+                                    </div>
                                 </section>
                             )}
 
