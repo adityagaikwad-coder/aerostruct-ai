@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AeroStruct AI | Drone Superstructure Quality Inspection Platform</title>
+    <title>AeroStruct | Structural Quality Inspection</title>
+    <meta name="description" content="AeroStruct: drone-based structural quality inspection for columns, beams, slabs and walls.">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,11 +19,16 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Manrope', 'sans-serif'],
+                        heading: ['Fraunces', 'serif'],
+                        mono: ['Manrope', 'sans-serif'],
                     },
                     colors: {
+                        slate: { 50:'#f7f7f9', 100:'#efeef1', 200:'#dedde2', 300:'#c3c3cb', 400:'#9a9ba6', 500:'#6b6c78', 600:'#3b3c47', 700:'#2a2b34', 800:'#1c1d24', 900:'#121318', 950:'#0b0c0f' },
+                        cyan: { 50:'#fcf8ec', 100:'#f8f0d9', 200:'#f0e2bb', 300:'#e6cf94', 400:'#d9b968', 500:'#c9a24a', 600:'#a37e2c', 700:'#7d5f22', 800:'#5c4519', 900:'#3a2c10', 950:'#1d1608' },
+                        blue: { 400:'#d9b968', 500:'#c9a24a', 600:'#a37e2c', 700:'#7d5f22', 900:'#3a2c10' },
+                        teal: { 400:'#e6cf94', 500:'#d9b968', 600:'#c9a24a' },
+                        sky: { 300:'#e6cf94', 400:'#d9b968', 800:'#5c4519', 950:'#1d1608' },
                         brand: {
                             50: '#f0f9ff',
                             100: '#e0f2fe',
@@ -35,7 +41,7 @@
                         cyber: {
                             dark: '#070b12',
                             card: '#0d1527',
-                            border: '#1a263d',
+                            border: '#26272f',
                             accent: '#06b6d4',
                         }
                     }
@@ -52,9 +58,9 @@
     <style>
         * { box-sizing: border-box; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #070b12; }
-        ::-webkit-scrollbar-thumb { background: #1a263d; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #263854; }
+        ::-webkit-scrollbar-track { background: #0b0c0f; }
+        ::-webkit-scrollbar-thumb { background: #2a2b34; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b3c47; }
 
         .glass-panel {
             background: rgba(13, 21, 39, 0.88);
@@ -95,10 +101,36 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, #06b6d4, #10b981, #f59e0b, #ef4444, transparent);
-            box-shadow: 0 0 16px 3px rgba(6, 182, 212, 0.8);
+            background: linear-gradient(90deg, transparent, #c9a24a, #f0e2bb, #c9a24a, transparent);
+            box-shadow: 0 0 16px 3px rgba(201, 162, 74, 0.6);
             animation: scanline 2.2s ease-in-out infinite;
         }
+
+        /* ---- Premium theme overrides ---- */
+        body {
+            font-family: 'Manrope', sans-serif;
+            background:
+                radial-gradient(1200px 600px at 85% -10%, rgba(201, 162, 74, 0.10), transparent 60%),
+                radial-gradient(900px 500px at -10% 110%, rgba(201, 162, 74, 0.06), transparent 60%),
+                #0b0c0f;
+            background-attachment: fixed;
+        }
+        .font-heading { font-family: 'Fraunces', serif; letter-spacing: -0.01em; }
+        .font-mono { letter-spacing: 0.04em; }
+        .hud-grid { background-image: none; }
+        .glass-panel {
+            background: linear-gradient(180deg, rgba(26, 27, 34, 0.88), rgba(16, 17, 22, 0.92));
+            border: 1px solid rgba(217, 185, 104, 0.12);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 50px -28px rgba(0, 0, 0, 0.85);
+        }
+        .glass-panel-glow {
+            background: linear-gradient(180deg, rgba(28, 29, 36, 0.94), rgba(16, 17, 22, 0.96));
+            border: 1px solid rgba(217, 185, 104, 0.32);
+            box-shadow: 0 0 0 1px rgba(217, 185, 104, 0.05), 0 30px 70px -32px rgba(201, 162, 74, 0.30);
+        }
+        button { transition: all 0.2s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        section { animation: fadeUp 0.5s ease both; }
 
         @media print {
             body { background: white !important; color: black !important; }
@@ -108,7 +140,7 @@
         }
     </style>
 </head>
-<body class="bg-[#070b12] text-slate-100 font-sans min-h-screen antialiased hud-grid selection:bg-cyan-500/30 selection:text-cyan-200">
+<body class="text-slate-100 font-sans min-h-screen antialiased selection:bg-cyan-500/30 selection:text-cyan-100">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -199,12 +231,12 @@
 
         // --- SPECIFICATION FROM PUNE RESEARCH PRESENTATION ---
         const STRUCTURAL_ELEMENTS = [
-            { id: 'RCC columns', name: 'RCC Columns', code: 'COL', tagColor: 'text-sky-400 bg-sky-950/80 border-sky-800', desc: 'Vertical axial members, grid alignment, form-tie sleeves' },
-            { id: 'Beams', name: 'Beams', code: 'BM', tagColor: 'text-emerald-400 bg-emerald-950/80 border-emerald-800', desc: 'Horizontal flexural members, soffit levelness, node joints' },
-            { id: 'Slabs', name: 'Slabs & Terraces', code: 'SLB', tagColor: 'text-amber-400 bg-amber-950/80 border-amber-800', desc: 'Flatness, levelness, drop-beam continuity, ponding cracks' },
-            { id: 'Walls', name: 'Walls & Masonry', code: 'WL', tagColor: 'text-purple-400 bg-purple-950/80 border-purple-800', desc: 'Plumbness, lift lines, cold joints, surface finish' },
-            { id: 'Shear walls', name: 'Shear Walls (Core)', code: 'SW', tagColor: 'text-rose-400 bg-rose-950/80 border-rose-800', desc: 'High-density core walls, honeycombing, opening perimeters' },
-            { id: 'Parapet walls', name: 'Parapet Walls', code: 'PW', tagColor: 'text-cyan-400 bg-cyan-950/80 border-cyan-800', desc: 'Roof edge coping line, perimeter drainage slopes, weather seals' }
+            { id: 'column', name: 'Columns', code: 'C', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Vertical supports: straightness, surface and tie holes' },
+            { id: 'beam', name: 'Beams', code: 'B', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Horizontal members: levelness, joints and underside' },
+            { id: 'slab', name: 'Slabs & Terraces', code: 'S', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Floors and roofs: flatness, levelness and cracks' },
+            { id: 'wall', name: 'Walls & Masonry', code: 'W', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Straightness, pour lines and surface finish' },
+            { id: 'shear wall', name: 'Shear Walls', code: 'SW', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Core walls: honeycombing and opening edges' },
+            { id: 'parapet wall', name: 'Parapet Walls', code: 'P', tagColor: 'text-cyan-300 bg-cyan-950/50 border-cyan-800/60', desc: 'Roof edge line, drainage slope and weather seals' }
         ];
 
         const INSPECTION_PARAMETERS = [
@@ -380,10 +412,10 @@
         };
 
         const BUILTIN_SAMPLES = [
-            { id: 'column', name: 'RCC Column - Formwork & Sleeves', element: 'RCC columns', type: 'column', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
-            { id: 'shearwall', name: 'Shear Wall - Core Facade', element: 'Shear walls', type: 'shearwall', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
-            { id: 'slab', name: 'Concrete Slab & Drop Beams', element: 'Slabs', type: 'slab', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
-            { id: 'selfie', name: '⚠️ Selfie / Portrait (Negative Test)', element: 'RCC columns', type: 'selfie', isConstruction: false, tagClass: 'bg-rose-950/80 text-rose-300 border-rose-800' }
+            { id: 'column', name: 'Column - Formwork Ties', element: 'column', type: 'column', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
+            { id: 'shearwall', name: 'Shear Wall - Core Facade', element: 'shear wall', type: 'shearwall', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
+            { id: 'slab', name: 'Concrete Slab & Drop Beams', element: 'slab', type: 'slab', isConstruction: true, tagClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-800' },
+            { id: 'selfie', name: '⚠️ Selfie / Portrait (Negative Test)', element: 'column', type: 'selfie', isConstruction: false, tagClass: 'bg-rose-950/80 text-rose-300 border-rose-800' }
         ];
 
         // Process Uploaded File
@@ -725,7 +757,7 @@
                 setInspectionResult(null);
 
                 // --- STAGE 1: COMPUTER VISION PRE-SCAN VALIDATION ---
-                setAnalysisProgress('Running Computer Vision Pre-Scan...');
+                setAnalysisProgress('Checking the photo...');
                 await new Promise(r => setTimeout(r, 400));
 
                 const preScan = await preScanImageValidity(currentImg.preview);
@@ -735,18 +767,18 @@
                     setIsAnalyzing(false);
                     setAnalysisProgress('');
                     setValidationError({
-                        title: 'Inspection Rejected: Non-Structural Image Detected',
-                        reason: `The pre-flight computer vision filter detected non-construction features (Skin Ratio: ${(preScan.skinRatio * 100).toFixed(1)}%, Concrete Texture: ${(preScan.concreteRatio * 100).toFixed(1)}%, Saturated Color: ${(preScan.vibrantRatio * 100).toFixed(1)}%).`,
-                        fix: 'This platform strictly inspects civil engineering superstructure elements (RCC Columns, Beams, Slabs, Walls, Shear Walls). Please upload an authentic site construction image.'
+                        title: 'Photo Not Accepted',
+                        reason: 'This photo does not appear to show a construction element. It may show people or another non-structural scene.',
+                        fix: 'Please upload a clear site photo of a column, beam, slab or wall.'
                     });
                     return;
                 }
 
                 // --- STAGE 2: PROCEDURAL CIVIL ANALYSIS ---
-                setAnalysisProgress('Analyzing Concrete Surface Textures & Geometry...');
+                setAnalysisProgress('Examining the structure...');
                 await new Promise(r => setTimeout(r, 550));
 
-                setAnalysisProgress('Evaluating 7 civil engineering criteria against IS 456...');
+                setAnalysisProgress('Preparing your report...');
                 await new Promise(r => setTimeout(r, 450));
 
                 const dynamicResult = generateProceduralInspection(selectedElement, preScan, floorNumber, towerId, flightAngle);
@@ -763,21 +795,17 @@
                     {/* Top Drone Telemetry Navigation Bar */}
                     <header className="glass-panel border-b border-cyber-border sticky top-0 z-40 px-5 py-3.5 flex items-center justify-between no-print shadow-xl">
                         <div className="flex items-center space-x-3.5">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 ring-1 ring-white/20 shrink-0">
-                                <DroneIcon className="w-6 h-6 text-white" />
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-300 via-cyan-500 to-cyan-700 flex items-center justify-center shadow-lg shadow-cyan-500/20 ring-1 ring-white/20 shrink-0">
+                                <DroneIcon className="w-6 h-6 text-slate-950" />
                             </div>
                             <div>
                                 <div className="flex items-center gap-2">
                                     <h1 className="font-heading font-extrabold text-lg tracking-tight text-white">
-                                        AeroStruct <span className="text-cyan-400">AI</span>
+                                        Aero<span className="text-cyan-400">Struct</span>
                                     </h1>
-                                    <span className="text-[10px] font-mono font-bold bg-gradient-to-r from-emerald-950 to-cyan-950 text-emerald-300 border border-emerald-700/80 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                        PUNE HIGH-RISE v2.5
-                                    </span>
                                 </div>
                                 <p className="text-xs text-slate-400">
-                                    Quality Assessment of Superstructure Elements via Drone Photogrammetry
+                                    Structural Quality Inspection
                                 </p>
                             </div>
                         </div>
@@ -788,47 +816,39 @@
                                 onClick={() => setActiveTab('inspector')}
                                 className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                                     activeTab === 'inspector'
-                                        ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md shadow-cyan-600/30'
+                                        ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
                                         : 'text-slate-400 hover:text-white'
                                 }`}
                             >
-                                <EyeIcon className="w-3.5 h-3.5 text-cyan-300" />
-                                Live Inspector
+                                <EyeIcon className="w-3.5 h-3.5" />
+                                Inspection
                             </button>
                             <button
                                 onClick={() => setActiveTab('comparison')}
                                 className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                                     activeTab === 'comparison'
-                                        ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/30'
+                                        ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
                                         : 'text-slate-400 hover:text-white'
                                 }`}
                             >
-                                <LayersIcon className="w-3.5 h-3.5 text-emerald-300" />
-                                Drone vs. Conventional
+                                <LayersIcon className="w-3.5 h-3.5" />
+                                Why Drones
                             </button>
                             <button
                                 onClick={() => setActiveTab('methodology')}
                                 className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                                     activeTab === 'methodology'
-                                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md shadow-amber-600/30'
+                                        ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
                                         : 'text-slate-400 hover:text-white'
                                 }`}
                             >
-                                <ShieldCheckIcon className="w-3.5 h-3.5 text-amber-300" />
-                                Research Framework
+                                <ShieldCheckIcon className="w-3.5 h-3.5" />
+                                Methodology
                             </button>
                         </div>
 
                         {/* Telemetry Status Chips & Print */}
                         <div className="flex items-center space-x-2.5 text-xs">
-                            <div className="hidden lg:flex items-center space-x-2 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-lg font-mono text-[11px]">
-                                <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                    STANDOFF: 2.8m
-                                </span>
-                                <span className="text-slate-600">|</span>
-                                <span className="text-amber-400 font-semibold">GIMBAL: {flightAngle}°</span>
-                            </div>
                             <button
                                 onClick={() => window.print()}
                                 className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 shadow-sm"
@@ -847,8 +867,8 @@
                             {/* Target Element Selector with Distinct Accents */}
                             <div>
                                 <label className="block text-[11px] font-mono font-bold text-cyan-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-                                    <span>01. Superstructure Element</span>
-                                    <span className="text-[10px] text-slate-500 font-normal">Select Member</span>
+                                    <span>Structural Element</span>
+                                    <span className="text-[10px] text-slate-500 font-normal">Choose one</span>
                                 </label>
                                 <div className="space-y-1.5">
                                     {STRUCTURAL_ELEMENTS.map(el => (
@@ -884,8 +904,8 @@
                             {/* Flight & Location Metadata */}
                             <div className="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800 space-y-3">
                                 <label className="block text-[11px] font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center justify-between">
-                                    <span>02. Flight & Location Tags</span>
-                                    <span className="text-[10px] text-slate-500">Telemetry</span>
+                                    <span>Site Details</span>
+                                    <span className="text-[10px] text-slate-500">Optional</span>
                                 </label>
                                 
                                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -910,7 +930,7 @@
                                 </div>
 
                                 <div>
-                                    <span className="text-slate-400 text-[10px] block mb-1">Camera Gimbal Viewpoint</span>
+                                    <span className="text-slate-400 text-[10px] block mb-1">Camera Angle</span>
                                     <div className="grid grid-cols-3 gap-1.5">
                                         {['30', '45', '90'].map(deg => (
                                             <button
@@ -922,7 +942,7 @@
                                                         : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
                                                 }`}
                                             >
-                                                {deg}° {deg === '90' ? '(Nadir)' : '(Oblique)'}
+                                                {deg === '90' ? 'Top-down' : `${deg}° angle`}
                                             </button>
                                         ))}
                                     </div>
@@ -933,9 +953,9 @@
                             <div className="bg-slate-900/50 rounded-xl p-3.5 border border-slate-800/80">
                                 <div className="flex items-center justify-between mb-2">
                                     <span className="text-[11px] font-mono font-bold text-emerald-400 uppercase tracking-wider">
-                                        Test Images (1-Click)
+                                        Sample Images
                                     </span>
-                                    <span className="text-[10px] text-cyan-400 font-mono">Instant Samples</span>
+                                    <span className="text-[10px] text-cyan-400 font-mono">Try one</span>
                                 </div>
                                 <div className="space-y-1.5">
                                     {BUILTIN_SAMPLES.map((sample) => (
@@ -957,29 +977,6 @@
                                 </div>
                             </div>
 
-                            {/* Intelligent Inspection Engine Telemetry Widget (Clean & Professional) */}
-                            <div className="bg-gradient-to-br from-slate-900/80 via-slate-900/50 to-slate-950 rounded-xl p-3.5 border border-slate-800 text-xs space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400 font-bold">
-                                        Inspection Engine Status
-                                    </span>
-                                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
-                                </div>
-                                <div className="space-y-1 text-[11px] text-slate-400">
-                                    <div className="flex items-center justify-between">
-                                        <span>Standard Compliance:</span>
-                                        <span className="text-amber-300 font-mono font-semibold">IS 456 / IS 13920</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span>Domain Validation:</span>
-                                        <span className="text-emerald-300 font-mono font-semibold">YCbCr Active</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span>Analysis Mode:</span>
-                                        <span className="text-cyan-300 font-mono font-semibold">Direct Vision AI</span>
-                                    </div>
-                                </div>
-                            </div>
                         </aside>
 
                         {/* CENTER / RIGHT WORKSPACE: Inspection Canvas & Reports */}
@@ -997,7 +994,7 @@
                                     <div className="text-xs">
                                         <div className="font-bold text-sm mb-1 text-white flex items-center gap-2">
                                             <span>{validationError.title}</span>
-                                            <span className="text-[10px] font-mono bg-rose-600 text-white px-2 py-0.5 rounded-full">GUARDRAIL BLOCKED</span>
+                                            <span className="text-[10px] font-mono bg-rose-600 text-white px-2 py-0.5 rounded-full">NOT ACCEPTED</span>
                                         </div>
                                         <div className="leading-relaxed mb-1 text-rose-200">{validationError.reason}</div>
                                         {validationError.fix && (
@@ -1031,17 +1028,17 @@
                                             <CameraIcon className="w-7 h-7" />
                                         </div>
                                         <h3 className="text-base font-heading font-bold text-white mb-1">
-                                            Upload Drone Inspection Imagery
+                                            Upload Inspection Photos
                                         </h3>
                                         <p className="text-xs text-slate-400 max-w-md">
-                                            Drag & drop site photographs or click to browse. Or select a <strong>1-Click Test Image</strong> from the left panel to test immediately.
+                                            Drag and drop site photographs here, or click to browse. You can also try one of the sample images in the left panel.
                                         </p>
                                         <div className="mt-3.5 flex items-center gap-2.5">
                                             <span className="text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded-full border border-cyan-800">
                                                 Max 3 Photos per Run
                                             </span>
                                             <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-800">
-                                                Anti-Selfie Guardrail Active
+                                                Non-structural photos are filtered out
                                             </span>
                                         </div>
                                     </div>
@@ -1088,7 +1085,7 @@
                                                         }`}
                                                     >
                                                         <EyeIcon className="w-3.5 h-3.5" />
-                                                        <span>Defect Bounding Boxes ({inspectionResult.boxes.length})</span>
+                                                        <span>Highlight Findings ({inspectionResult.boxes.length})</span>
                                                     </button>
                                                 )}
 
@@ -1103,18 +1100,11 @@
 
                                         {/* Main Photographic HUD Viewport */}
                                         <div className="relative rounded-xl overflow-hidden bg-black aspect-[16/9] border border-slate-800 flex items-center justify-center group shadow-2xl">
-                                            {/* Multi-Colored Corner Reticles */}
-                                            <div className="crosshair-corner top-3 left-3 border-t-2 border-l-2 border-cyan-400"></div>
-                                            <div className="crosshair-corner top-3 right-3 border-t-2 border-r-2 border-amber-400"></div>
-                                            <div className="crosshair-corner bottom-3 left-3 border-b-2 border-l-2 border-emerald-400"></div>
-                                            <div className="crosshair-corner bottom-3 right-3 border-b-2 border-r-2 border-rose-400"></div>
-
-                                            {/* Center Crosshair */}
-                                            <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
-                                                <div className="w-14 h-14 border border-cyan-400 rounded-full flex items-center justify-center">
-                                                    <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                                                </div>
-                                            </div>
+                                            {/* Corner marks */}
+                                            <div className="crosshair-corner top-3 left-3 border-t border-l border-cyan-400/80"></div>
+                                            <div className="crosshair-corner top-3 right-3 border-t border-r border-cyan-400/80"></div>
+                                            <div className="crosshair-corner bottom-3 left-3 border-b border-l border-cyan-400/80"></div>
+                                            <div className="crosshair-corner bottom-3 right-3 border-b border-r border-cyan-400/80"></div>
 
                                             {/* Site Image */}
                                             <img
@@ -1155,24 +1145,16 @@
                                                 </div>
                                             )}
 
-                                            {/* Telemetry Overlay Tags */}
-                                            <div className="absolute top-3 left-10 font-mono text-[10px] text-cyan-300 bg-black/80 px-2.5 py-1 rounded backdrop-blur-sm border border-cyan-900/60 flex items-center gap-2">
-                                                <span className="text-sky-300 font-bold">ELEM: {selectedElement.toUpperCase()}</span>
-                                                <span className="text-slate-500">|</span>
-                                                <span className="text-emerald-300">FLR: {floorNumber}</span>
-                                                <span className="text-slate-500">|</span>
-                                                <span className="text-amber-300">CAM: {flightAngle}°</span>
-                                            </div>
-
-                                            <div className="absolute bottom-3 right-3 font-mono text-[10px] text-slate-300 bg-black/80 px-2 py-1 rounded backdrop-blur-sm border border-slate-800">
-                                                RES: {activeImg?.width} × {activeImg?.height} px
+                                            {/* Label overlay */}
+                                            <div className="absolute top-3 left-10 text-[11px] tracking-wide text-slate-100 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10 capitalize">
+                                                {selectedElement} &middot; Floor {floorNumber}
                                             </div>
                                         </div>
 
                                         {/* Action Bar with Fresh Multi-Hue Gradient Button */}
                                         <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/70 p-4 rounded-xl border border-slate-800 shadow-md">
                                             <div className="text-xs text-slate-300">
-                                                Ready to inspect <strong className="text-cyan-400 font-semibold">{selectedElement}</strong> at Floor {floorNumber} ({towerId}).
+                                                Ready to inspect <strong className="text-cyan-400 font-semibold capitalize">{selectedElement}</strong> at Floor {floorNumber} ({towerId}).
                                             </div>
 
                                             <button
@@ -1181,7 +1163,7 @@
                                                 className={`w-full sm:w-auto px-7 py-3 rounded-xl font-heading font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2.5 shadow-lg ${
                                                     isAnalyzing
                                                         ? 'bg-slate-700 text-white cursor-not-allowed opacity-80'
-                                                        : 'bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 hover:from-blue-500 hover:to-teal-400 text-white shadow-cyan-500/25 active:scale-95'
+                                                        : 'bg-gradient-to-r from-cyan-500 via-cyan-400 to-cyan-500 hover:from-cyan-400 hover:to-cyan-300 text-slate-950 shadow-cyan-500/25 active:scale-95'
                                                 }`}
                                             >
                                                 {isAnalyzing ? (
@@ -1191,8 +1173,8 @@
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <CpuIcon className="w-4 h-4 text-cyan-100" />
-                                                        <span>Analyze 7 Structural Criteria</span>
+                                                        <CpuIcon className="w-4 h-4 text-slate-900" />
+                                                        <span>Run Inspection</span>
                                                     </>
                                                 )}
                                             </button>
@@ -1235,12 +1217,6 @@
                                             </p>
                                         </div>
 
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-[11px] font-mono bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg text-emerald-400 flex items-center gap-1.5">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                                SMART CIVIL ENGINE: ACTIVE
-                                            </span>
-                                        </div>
                                     </div>
 
                                     {/* 1. What we observed (plain language) */}
@@ -1333,7 +1309,6 @@
                                     <div className="border-b border-slate-800 pb-3.5">
                                         <h2 className="text-xl font-heading font-bold text-white flex items-center gap-2">
                                             <span>Drone Inspection vs. Conventional Inspection</span>
-                                            <span className="text-xs font-mono font-normal bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-full">Slide 10</span>
                                         </h2>
                                         <p className="text-xs text-slate-400 mt-1">
                                             Comparative research findings by Suchita Asabe, Jahnvi & Avanti Khare (Pune High-Rise Construction).
@@ -1399,7 +1374,6 @@
                                     <div className="border-b border-slate-800 pb-3.5">
                                         <h2 className="text-xl font-heading font-bold text-white flex items-center gap-2">
                                             <span>Research Methodology & Inspection Checklist</span>
-                                            <span className="text-xs font-mono font-normal bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 rounded-full">Slide 5</span>
                                         </h2>
                                         <p className="text-xs text-slate-400 mt-1">
                                             7-step pipeline specified for high-rise residential projects in the Pune Region.
@@ -1413,7 +1387,7 @@
                                             { step: '03', title: 'Quality Parameters', color: 'text-amber-400 border-amber-800', desc: 'Finalized 7 measurable visual parameters for RCC superstructure members.' },
                                             { step: '04', title: 'Flight Planning', color: 'text-cyan-400 border-cyan-800', desc: 'Safe standoff distance, floor-by-floor routes, 30°/45°/90° gimbal viewpoints.' },
                                             { step: '05', title: 'Data Acquisition', color: 'text-purple-400 border-purple-800', desc: 'High-res photos/videos with timestamp, floor, and tower grid coordinate tags.' },
-                                            { step: '06', title: 'Image Processing & AI', color: 'text-rose-400 border-rose-800', desc: 'Automated filtering, anomaly bounding boxes, and tolerance deviation calculations.' },
+                                            { step: '06', title: 'Image Processing', color: 'text-rose-400 border-rose-800', desc: 'Automated filtering, anomaly bounding boxes, and tolerance deviation calculations.' },
                                         ].map(item => (
                                             <div key={item.step} className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
                                                 <span className={`font-mono text-xs font-bold block mb-1 ${item.color}`}>STEP {item.step}</span>
